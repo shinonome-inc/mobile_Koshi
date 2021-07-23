@@ -55,14 +55,17 @@ class TopPage extends StatelessWidget {
                 width: 360,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
+                    primary: Colors.green[800],
                     onPrimary: Colors.white,
                     shape: const StadiumBorder(),
                   ),
                   onPressed: () {
 
                   },
-                  child: Text("ログイン"),
+                  child: Text("ログイン",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),),
                 ),
               ),
               Container(
@@ -73,6 +76,7 @@ class TopPage extends StatelessWidget {
                   child: Text("ログインせずに利用する",
                     style: TextStyle(
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   onPressed: () {
