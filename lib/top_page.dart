@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(TopPage());
-}
 class TopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
