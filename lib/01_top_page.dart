@@ -1,81 +1,89 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(TopPage());
 }
-
-class MyApp extends StatelessWidget {
+class TopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-              image: new DecorationImage(
+      home: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.2),
-                    BlendMode.luminosity),
+                    BlendMode.luminosity
+                ),
                 image: AssetImage('images/background.png'),
                 fit: BoxFit.cover,
-              )
-          ),
-        ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-              child: Text("Qiita Feed app",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontFamily: 'Pacifico',
-                ),
               ),
             ),
-            Container(
-                padding: EdgeInsets.fromLTRB(45, 0, 0, 319),
-                child: Text("-playground-",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),)
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(54, 0, 24, 34),
-              child: SizedBox(
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(flex: 3, child: Container(color: Colors.grey.withAlpha(0),)),
+              Container(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text("Qiita Feed app",
+                    style: TextStyle(
+                      fontSize: 36,
+                      color: Colors.white,
+                      fontFamily: 'Pacifico',
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text("-playground-",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(flex: 5, child: Container(color: Colors.grey.withAlpha(0))),
+              SizedBox(
                 height: 50,
                 width: 360,
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                    onPrimary: Colors.white,
+                    shape: const StadiumBorder(),
                   ),
-                  child: Text("ログイン"),
                   onPressed: () {
 
                   },
+                  child: Text("ログイン"),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 0, 40),
-              child: SizedBox(
-                child: TextButton(
+              Container(
+                margin: EdgeInsets.only(bottom: 55, top: 20,),
+                height: 50,
+                width: 360,
+                child: FlatButton(
                   child: Text("ログインせずに利用する",
                     style: TextStyle(
                       color: Colors.white,
-                    ),),
+                    ),
+                  ),
                   onPressed: () {
 
                   },
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
-
     );
-
   }
 }
