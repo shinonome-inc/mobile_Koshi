@@ -5,11 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/item.dart';
 import 'models/tags.dart';
+import 'client.dart';
+
 
 String onFieldSubmittedText = '';
 class QiitaRepository {
-  final clientID = '12e1133c98e78c6ca893200a1a77bb555f4448b2';
-  final clientSecret = '7eae0943cb8dd8989bdb228f8516ebdf2dab053a';
+  final clientID = '${Client().clientId}';
+  final clientSecret = '${Client().clientSecret}';
   final keyAccessToken = 'qiita/accessToken';
 
 
