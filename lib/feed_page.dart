@@ -28,9 +28,9 @@ class _FeedPageState extends State<FeedPage> {
               size: 25,),
             isDense: true,
             contentPadding: EdgeInsets.fromLTRB(40, 0, 0, 0),
-            hintStyle: TextStyle(color: Colors.grey, fontSize: 17),
+            hintStyle: TextStyle(color: Color(0xFF848484), fontSize: 17),
             filled: true,
-            fillColor: Colors.grey[200],
+            fillColor: Color(0xFFEFEFF0),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.transparent, width: 1),

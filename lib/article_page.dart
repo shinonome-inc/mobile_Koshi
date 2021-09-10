@@ -16,7 +16,7 @@ class ArticlePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 45,
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Color(0xFFF5F5F5),
         title: Text('article',
           style: TextStyle(
             fontSize: 17,
