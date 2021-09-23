@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/feed_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'models/item.dart';
@@ -29,7 +30,10 @@ class ArticlePage extends StatelessWidget {
       body: WebView(
         initialUrl: item.url,
         javascriptMode: JavascriptMode.unrestricted,
-      ),
-    );
+        onWebViewCreated: (WebViewController controller) {
+          print("Created");
+        },
+        ),
+      );
   }
 }

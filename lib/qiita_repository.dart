@@ -99,7 +99,7 @@ class QiitaRepository {
   }
   Future<List<Tags>> fetchTags() async {
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/tags?page=1&per_page=20&sort=count HTTP/1.1'),
+      Uri.parse('https://qiita.com/api/v2/tags?page=1&per_page=20&sort=count'),
     );
     if (response.statusCode == 200) {
       print('fetchTags: Response Body');

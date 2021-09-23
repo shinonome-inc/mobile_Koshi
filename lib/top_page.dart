@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mobile_qiita_application/login.dart';
 import 'bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'package:uni_links/uni_links.dart';
@@ -16,29 +17,6 @@ class TopPage extends StatefulWidget {
 }
 
 class _TopPageState extends State<TopPage> {
-  final QiitaRepository repository = QiitaRepository();
-
-  String? _state;
-  StreamSubscription? _subscription;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _state = _randomString(40);
-    _subscription = uriLinkStream.listen((Uri? uri) {
-      if (uri!.path == '/oauth/authorize/callback') {
-        _onAuthorizeCallbackIsCalled(uri);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _subscription!.cancel();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,16 +67,37 @@ class _TopPageState extends State<TopPage> {
               SizedBox(
                 height: 50,
                 width: 360,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green[800],
-                    onPrimary: Colors.white,
-                    shape: const StadiumBorder(),
-                  ),
-                  onPressed: _onSignInButtonIsPressed,
-                  child: Text('ログイン',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                child: Builder(
+                  builder: (context) => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green[800],
+                      onPrimary: Colors.white,
+                      shape: const StadiumBorder(),
+                    ),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          enableDrag: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return Container(
+                                height: 700,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      topLeft: Radius.circular(20),
+                                    )
+                                ),
+                                child: Login()
+                            );
+                          }
+                      );
+                    },
+                    child: Text('ログイン',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -129,31 +128,5 @@ class _TopPageState extends State<TopPage> {
         ],
       ),
     );
-  }
-
-  void _onSignInButtonIsPressed() {
-    launch(repository.createdAuthorizeUrl(_state!));
-  }
-
-  void _onAuthorizeCallbackIsCalled(Uri uri) async {
-    closeWebView();
-
-    final accessToken =
-    await repository.createAccessTokenFromCallbackUri(uri, _state!);
-    await repository.saveAccessToken(accessToken);
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => FeedPage()),
-    );
-  }
-
-  String _randomString(int length) {
-    final chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    final rand = Random.secure();
-    final codeUnits = List.generate(length, (index) {
-      final n = rand.nextInt(chars.length);
-      return chars.codeUnitAt(n);
-    });
-    return String.fromCharCodes(codeUnits);
   }
 }

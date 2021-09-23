@@ -3,7 +3,7 @@ import 'package:mobile_qiita_application/models/user.dart';
 class Item {
   final String title;
   final String createdAt;
-  final String likesCount;
+  final int likesCount;
   final User user;
   final String url;
 

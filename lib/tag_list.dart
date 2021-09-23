@@ -21,52 +21,41 @@ class _TagListState extends State<TagList> {
       child: GridView.builder(
         gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
+          childAspectRatio: 162 / 138,
         ),
         itemCount: widget.tags.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(left: 18, top: 16),
-            child: GestureDetector(
-              onTap: () {
-
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.grey, width: 1),
+        itemBuilder: (BuildContext context, index) {
+          return Container(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Image.network(widget.tags[index].iconUrl),
+                Text(widget.tags[index].id,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF333333),
                 ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 16),
-                    Image.network(widget.tags[index].iconUrl),
-                    SizedBox(height: 8),
-                    Text(widget.tags[index].id,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text('記事件数: ${widget.tags[index].itemsCount}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text('フォロワー数: ${widget.tags[index].followersCount}',
-                      style: TextStyle(
-                        color: Colors.grey[800],
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
                 ),
-              ),
+                SizedBox(height: 8),
+                Text('記事件数: ${widget.tags[index].itemsCount}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF828282),
+                ),
+                ),
+                SizedBox(height: 8),
+                Text('フォロワー数: ${widget.tags[index].followersCount}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF828282),
+                ),
+                ),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Color(0xFFFFFFFF),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Color(0xFFE0E0E0), width: 1)
             ),
           );
         },
