@@ -18,8 +18,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final QiitaRepository repository = QiitaRepository();
-
+  
   String? _state;
+  String? _code;
   StreamSubscription? _subscription;
 
   @override
@@ -57,10 +58,10 @@ class _LoginState extends State<Login> {
         centerTitle: true,
       ),
       body: WebView(
-        initialUrl: repository.createdAuthorizeUrl(_state!),
+        initialUrl: QiitaRepository.createdAuthorizeUrl(_state!),
         javascriptMode: JavascriptMode.unrestricted,
         navigationDelegate: (NavigationRequest request) {
-          if (request.url == 'https://qiita.com/api/v2/access_tokens') {
+          if (request.url == 'https://qiita.com/settings/applications?code=$_code&state=$_state') {
             _onAuthorizeCallbackIsCalled(uri!);
           }
           return NavigationDecision.navigate;
@@ -71,11 +72,12 @@ class _LoginState extends State<Login> {
     );
   }
   void _onAuthorizeCallbackIsCalled(Uri uri) async {
+    print(_onAuthorizeCallbackIsCalled);
     closeWebView();
 
     final accessToken =
-    await repository.createAccessTokenFromCallbackUri(uri, _state!);
-    await repository.saveAccessToken(accessToken);
+    await QiitaRepository.createAccessTokenFromCallbackUri(uri, _state!, _code!);
+    await QiitaRepository.saveAccessToken(accessToken);
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => FeedPage()),

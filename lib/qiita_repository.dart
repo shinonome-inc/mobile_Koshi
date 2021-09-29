@@ -6,23 +6,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'models/item.dart';
 import 'models/tags.dart';
 import 'client.dart';
+import 'models/authenticated_user.dart';
+
 
 
 String onFieldSubmittedText = '';
+String TagId = '';
 class QiitaRepository {
-  final clientID = '${Client().clientId}';
-  final clientSecret = '${Client().clientSecret}';
-  final keyAccessToken = 'qiita/accessToken';
+  static final clientID = '${Client().clientId}';
+  static final clientSecret = '${Client().clientSecret}';
+  static final keyAccessToken = 'qiita/accessToken';
 
 
 
-  String createdAuthorizeUrl(String state) {
+  static String createdAuthorizeUrl(String state) {
     final scope = 'read_qiita write_qiita';
     return 'https://qiita.com/api/v2/oauth/authorize?client_id=$clientID&scope=$scope&state=$state';
   }
 
-  Future<String> createAccessTokenFromCallbackUri(Uri uri,
-      String expectedState,) async {
+  static Future<String> createAccessTokenFromCallbackUri(Uri uri,
+      String expectedState, String expectedCode) async {
     final String? state = uri.queryParameters['state'];
     final String? code = uri.queryParameters['code'];
     if (expectedState != state) {
@@ -46,7 +49,7 @@ class QiitaRepository {
     return accessToken;
   }
 
-  Future<void> revokeSavedAccessToken() async {
+  static Future<void> revokeSavedAccessToken() async {
     final accessToken = await getAccessToken();
     final response = await http.delete(
         Uri.parse('https://qiita.com/api/v2/access_tokens/$accessToken'),
@@ -60,12 +63,12 @@ class QiitaRepository {
     }
   }
 
-  Future<void> saveAccessToken(String accessToken) async {
+  static Future<void> saveAccessToken(String accessToken) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(keyAccessToken, accessToken);
   }
 
-  Future<String?> getAccessToken() async {
+  static Future<String?> getAccessToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(keyAccessToken);
   }
@@ -80,7 +83,7 @@ class QiitaRepository {
     return accessToken != null;
   }
 
-  Future<List<Item>> fetchItems() async {
+  static Future<List<Item>> fetchItems() async {
     final response = await http.get(
       Uri.parse('https://qiita.com/api/v2/items?page=1&per_page=20&query=' +onFieldSubmittedText+ '%3AQiita HTTP/1.1'),
     );
@@ -97,7 +100,7 @@ class QiitaRepository {
     }
 
   }
-  Future<List<Tags>> fetchTags() async {
+  static Future<List<Tags>> fetchTags() async {
     final response = await http.get(
       Uri.parse('https://qiita.com/api/v2/tags?page=1&per_page=20&sort=count'),
     );
@@ -111,6 +114,55 @@ class QiitaRepository {
       return tags;
     } else {
       throw Exception('Failed to load item');
+    }
+  }
+  static Future<List<Item>> fetchArticle() async {
+    final response = await http.get(
+      Uri.parse('https://qiita.com/api/v2/items?page=1&per_page=20&query=' +TagId+ '%3AQiita HTTP/1.1')
+    );
+    if (response.statusCode == 200) {
+      print('fetchItems: Response Body');
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final articles = jsonArray.map((article) {
+        return Item.fromJson(article);
+      }).toList();
+      return articles;
+    } else {
+      throw Exception('Failed to load item');
+    }
+  }
+  static Future<AuthenticatedUser> fetchAuthenticatedUser() async {
+    final accessToken = await getAccessToken();
+    final response = await http.get(
+      Uri.parse('https://qiita.com/api/v2/authenticated_user'),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+    final body = jsonDecode(response.body);
+    final authenticatedUser = AuthenticatedUser.fromJson(body);
+
+    return authenticatedUser;
+  }
+  static Future<List<Item>> fetchAuthenticatedUserItem() async {
+    final accessToken = await getAccessToken();
+    final response = await http.get(
+      Uri.parse('https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20'),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('fetchAuthenticatedUserItem: Response Body');
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final items = jsonArray.map((authenticatedUserItem) {
+        return Item.fromJson(authenticatedUserItem);
+      }).toList();
+      return items;
+    } else {
+      throw Exception('Failed to load authenticatedUserItems');
     }
   }
 }
