@@ -21,7 +21,6 @@ class _LoginState extends State<Login> {
   final QiitaRepository repository = QiitaRepository();
   
   String? _state;
-  StreamSubscription? _subscription;
   late final Uri uri;
   bool _isLoading = false;
 
@@ -29,20 +28,9 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     _state = _randomString(40);
-    _subscription = uriLinkStream.listen((Uri? uri) {
-      if (uri!.path == '/settings/applications') {
-        _onAuthorizeCallbackIsCalled(uri);
-      }
-    });
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
-  @override
-  void dispose() {
-    _subscription!.cancel();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
