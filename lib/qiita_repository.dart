@@ -25,7 +25,7 @@ class QiitaRepository {
   }
 
   static Future<String> createAccessTokenFromCallbackUri(Uri uri,
-      String expectedState, String expectedCode) async {
+      String expectedState) async {
     final String? state = uri.queryParameters['state'];
     final String? code = uri.queryParameters['code'];
     if (expectedState != state) {

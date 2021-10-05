@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 import 'feed_page.dart';
@@ -20,8 +21,9 @@ class _LoginState extends State<Login> {
   final QiitaRepository repository = QiitaRepository();
   
   String? _state;
-  String? _code;
   StreamSubscription? _subscription;
+  late final Uri uri;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -44,7 +46,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    Uri? uri;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -60,11 +61,20 @@ class _LoginState extends State<Login> {
       body: WebView(
         initialUrl: QiitaRepository.createdAuthorizeUrl(_state!),
         javascriptMode: JavascriptMode.unrestricted,
-        navigationDelegate: (NavigationRequest request) {
-          if (request.url == 'https://qiita.com/settings/applications?code=$_code&state=$_state') {
-            _onAuthorizeCallbackIsCalled(uri!);
-          }
-          return NavigationDecision.navigate;
+        onPageStarted: (String url) {
+          setState(() {
+            _isLoading = true;
+          });
+        },
+        onPageFinished: (String url) {
+          setState(() async {
+            _isLoading = false;
+            print(url);
+            final uri = Uri.parse(url);
+            if(uri.queryParameters['code'] != null) {
+              _onAuthorizeCallbackIsCalled(uri);
+            }
+          });
         },
 
       ),
@@ -72,15 +82,15 @@ class _LoginState extends State<Login> {
     );
   }
   void _onAuthorizeCallbackIsCalled(Uri uri) async {
-    print(_onAuthorizeCallbackIsCalled);
-    closeWebView();
+
 
     final accessToken =
-    await QiitaRepository.createAccessTokenFromCallbackUri(uri, _state!, _code!);
+    await QiitaRepository.createAccessTokenFromCallbackUri(uri, _state!);
+    print('[accessToken]: $accessToken');
     await QiitaRepository.saveAccessToken(accessToken);
 
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => FeedPage()),
+      MaterialPageRoute(builder: (_) => BottomBar()),
     );
   }
   String _randomString(int length) {

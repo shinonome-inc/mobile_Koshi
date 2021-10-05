@@ -17,13 +17,7 @@ class _ItemListState extends State<ItemList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          print('Loading New Data');
-          qiitaRepository.fetchItems();
-        },
-        child: ListView.builder(
+    return ListView.builder(
             itemCount: widget.items.length,
             itemBuilder: (context, index) {
               DateFormat format = DateFormat('yyyy/MM/dd');
@@ -82,8 +76,6 @@ class _ItemListState extends State<ItemList> {
                 ),
               );
             }
-        ),
-      ),
-    );
+        );
   }
 }

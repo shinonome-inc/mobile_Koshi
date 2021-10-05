@@ -31,7 +31,7 @@ class _TagPageState extends State<TagPage> {
         child: Column(
           children: [
             FutureBuilder(
-                future: qiitaRepository.fetchTags(),
+                future: QiitaRepository.fetchTags(),
                 builder: (BuildContext context, AsyncSnapshot<List<Tags>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Expanded(
