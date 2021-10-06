@@ -135,7 +135,8 @@ class QiitaRepository {
   static Future<List<Item>> fetchAuthenticatedUserItem() async {
     final accessToken = await getAccessToken();
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20'),
+      Uri.parse(
+          'https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20'),
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
@@ -151,4 +152,5 @@ class QiitaRepository {
     } else {
       throw Exception('Failed to load authenticatedUserItems');
     }
+  }
   }

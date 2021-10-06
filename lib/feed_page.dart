@@ -88,7 +88,8 @@ class _FeedPageState extends State<FeedPage> {
             children: [
               FutureBuilder<List<Item>>(
                   future: QiitaRepository.fetchItems(),
-                  builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Item>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Expanded(
                           child: Container(
@@ -105,10 +106,10 @@ class _FeedPageState extends State<FeedPage> {
                               },
                               child: ItemList(items: snapshot.data!)));
                     }
-
                   }),
             ],
           ),
         )
     );
   }
+}
