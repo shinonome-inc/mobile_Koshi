@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 
 
@@ -165,4 +166,3 @@ class QiitaRepository {
       throw Exception('Failed to load authenticatedUserItems');
     }
   }
-}
