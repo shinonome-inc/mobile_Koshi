@@ -1,25 +1,18 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
-import 'package:uni_links/uni_links.dart';
-import 'feed_page.dart';
 import 'qiita_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'bottom_navigation_bar/bottom_navigation_bar.dart';
 
 class Login extends StatefulWidget {
-
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
   final QiitaRepository repository = QiitaRepository();
-  
+
   String? _state;
   late final Uri uri;
   bool _isLoading = false;
@@ -28,8 +21,8 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     _state = _randomString(40);
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
+
 
 
   @override

@@ -49,20 +49,6 @@ class QiitaRepository {
     return accessToken;
   }
 
-  static Future<void> revokeSavedAccessToken() async {
-    final accessToken = await getAccessToken();
-    final response = await http.delete(
-        Uri.parse('https://qiita.com/api/v2/access_tokens/$accessToken'),
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-        }
-    );
-
-    if (response.statusCode == 404) {
-      throw Exception('Failed to revoke the access token');
-    }
-  }
-
   static Future<void> saveAccessToken(String accessToken) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(keyAccessToken, accessToken);
