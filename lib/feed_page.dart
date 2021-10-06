@@ -1,162 +1,115 @@
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'dart:async';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/feed_error_page.dart';
+import 'item_list.dart';
+import 'models/item.dart';
+import 'qiita_repository.dart';
 
-class User {
-  final String id;
-  final String iconUrl;
-  User({
-    required this.id,
-    required this.iconUrl,
-});
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      iconUrl: json['profile_image_url'],
-    );
-  }
-}
-
-class Article {
-  final String title;
-  final String url;
-  final User user;
-
-  Article({
-    required this.title,
-    required this.url,
-    required this.user,
-});
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
-      title: json['title'],
-      url: json['url'],
-      user: User.fromJson(json['user']),
-    );
-  }
-}
-
-class QiitaClient {
-  static Future<List<Article>> fetchArticle() async {
-    final url = 'https://qiita.com/api/v2/items' as Uri;
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonArray = json.decode(response.body);
-      return jsonArray.map((json) => Article.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load article');
-    }
-  }
-}
-
-class ArticleListView extends StatelessWidget {
-  final List<Article> articles;
-
-  ArticleListView({
-    Key? key,
-    required this.articles,
-  }) : super(key: key);
-
+class FeedPage extends StatefulWidget {
+  FeedPage({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: articles.length,
-      itemBuilder: (BuildContext context, int index) {
-        final article = articles[index];
-        return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(article.user.iconUrl),
+  _FeedPageState createState() => _FeedPageState();
+}
+
+class _FeedPageState extends State<FeedPage> {
+  QiitaRepository repository = QiitaRepository();
+  String onChangedText = '';
+  final textController = TextEditingController();
+
+  Widget _textField() {
+    return SizedBox(
+      height: 36,
+      child: TextFormField(
+          autocorrect: true,
+          controller: textController,
+          decoration: InputDecoration(
+            hintText: 'Search',
+            prefixIcon: Icon(Icons.search,
+              size: 25,),
+            isDense: true,
+            contentPadding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+            hintStyle: TextStyle(color: Color(0xFF848484), fontSize: 17),
+            filled: true,
+            fillColor: Color(0xFFEFEFF0),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.transparent, width: 1),
             ),
-            title: Text(article.title),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ArticleDetailPage(article: article)),
-              );
-            });
-      },
-    );
-  }
-}
-
-class ArticleDetailPage extends StatelessWidget {
-  final Article article;
-
-  ArticleDetailPage({
-    Key? key,
-    required this.article,
-}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fetch Data Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        body: Center(
-          child: WebView(
-            initialUrl: article.url,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.transparent, width: 1),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.redAccent, width: 1),
+            ),
           ),
-        ),
+          onChanged: (value) {
+            print('onchanged: $value');
+            setState(() {
+              onChangedText = value;
+            });
+          },
+          onFieldSubmitted: (value) {
+            print('onFieldSubmitted: $value');
+            setState(() {
+              onFieldSubmittedText = value;
+            });
+          }
       ),
     );
   }
-}
-class FeedPage extends StatelessWidget {
-  final Future<List<Article>> articles = QiitaClient.fetchArticle();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 130,
+          shadowColor: Colors.black38,
           backgroundColor: Colors.white,
-          title: Column(
-            children: [
-              Text('Feed',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                  fontFamily: 'Pacifico',
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 19, 0, 0),
-                child: SizedBox(
-                  height: 36,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'search',
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          title: Text('Feed',
+            style: TextStyle(
+              fontSize: 17,
+              fontFamily: 'Pacifico',
+              color: Colors.black,
+            ),
           ),
           centerTitle: true,
-        ),
-        body: Center(
-          child: FutureBuilder<List<Article>>(
-            future: articles,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return ArticleListView(articles: snapshot.data);
-              }
-              return CircularProgressIndicator();
-            }
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(40),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: _textField(),
+            ),
           ),
         ),
-      ),
+        body: Center(
+          child: Column(
+            children: [
+              FutureBuilder<List<Item>>(
+                  future: QiitaRepository.fetchItems(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Item>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(),
+                          ));
+                    } else if (snapshot.hasError) {
+                      return FeedErrorPage();
+                    } else {
+                      return Expanded(
+                          child: RefreshIndicator(
+                              onRefresh: () async {
+                                QiitaRepository.fetchItems();
+                              },
+                              child: ItemList(items: snapshot.data!)));
+                    }
+                  }),
+            ],
+          ),
+        )
     );
   }
 }
