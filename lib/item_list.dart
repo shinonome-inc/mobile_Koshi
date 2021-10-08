@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mobile_qiita_application/article_page.dart';
 import 'models/item.dart';
 import 'package:intl/intl.dart';
-import 'qiita_repository.dart';
 
 class ItemList extends StatefulWidget {
   final List<Item> items;
@@ -13,7 +12,6 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
-  QiitaRepository qiitaRepository = QiitaRepository();
 
   @override
   Widget build(BuildContext context) {
