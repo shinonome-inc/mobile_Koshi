@@ -35,16 +35,8 @@ class _ItemListState extends State<ItemList> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      subtitle: Row(
-                        children: [
-                          Text('@${widget.items[index].user.id}',
-                          maxLines: 2),
-                          SizedBox(width: 5),
-                          Text('投稿日: $date'),
-                          SizedBox(width: 5),
-                          Text('LGTM: ${widget.items[index].likesCount}'),
-                        ],
-                      ),
+                      subtitle: Text('@${widget.items[index].user.id} 投稿日: $date LGTM: ${widget.items[index].likesCount}',
+              maxLines: 2),
                       onTap: () {
                         showModalBottomSheet<Item>(
                             enableDrag: true,
@@ -66,14 +58,12 @@ class _ItemListState extends State<ItemList> {
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 72),
-                      child: Divider(
+                    Divider(
+                          indent: 72,
                           height: 5,
                           thickness: 0.5,
                           color: Color(0xFFB2B2B2),
                         ),
-                    ),
                   ],
                 ),
               );
