@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mobile_qiita_application/article_page.dart';
 import 'models/item.dart';
 import 'package:intl/intl.dart';
-import 'qiita_repository.dart';
 
 class ItemList extends StatefulWidget {
   final List<Item> items;
@@ -13,7 +12,6 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
-  QiitaRepository qiitaRepository = QiitaRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +35,8 @@ class _ItemListState extends State<ItemList> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      subtitle: Row(
-                        children: [
-                          Text('@${widget.items[index].user.id}'),
-                          SizedBox(width: 5),
-                          Text('投稿日: $date'),
-                          SizedBox(width: 5),
-                          Text('LGTM: ${widget.items[index].likesCount}'),
-                        ],
-                      ),
+                      subtitle: Text('@${widget.items[index].user.id} 投稿日: $date LGTM: ${widget.items[index].likesCount}',
+              maxLines: 2),
                       onTap: () {
                         showModalBottomSheet<Item>(
                             enableDrag: true,
@@ -68,10 +59,11 @@ class _ItemListState extends State<ItemList> {
                       },
                     ),
                     Divider(
-                      height: 5,
-                      thickness: 0.5,
-                      color: Colors.grey[600],
-                    )
+                          indent: 72,
+                          height: 5,
+                          thickness: 0.5,
+                          color: Color(0xFFB2B2B2),
+                        ),
                   ],
                 ),
               );
