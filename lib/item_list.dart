@@ -37,7 +37,8 @@ class _ItemListState extends State<ItemList> {
                       ),
                       subtitle: Row(
                         children: [
-                          Text('@${widget.items[index].user.id}'),
+                          Text('@${widget.items[index].user.id}',
+                          maxLines: 2),
                           SizedBox(width: 5),
                           Text('投稿日: $date'),
                           SizedBox(width: 5),
@@ -65,11 +66,14 @@ class _ItemListState extends State<ItemList> {
                         );
                       },
                     ),
-                    Divider(
-                      height: 5,
-                      thickness: 0.5,
-                      color: Colors.grey[600],
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(left: 72),
+                      child: Divider(
+                          height: 5,
+                          thickness: 0.5,
+                          color: Color(0xFFB2B2B2),
+                        ),
+                    ),
                   ],
                 ),
               );
