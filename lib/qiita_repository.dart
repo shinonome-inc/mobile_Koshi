@@ -70,9 +70,9 @@ class QiitaRepository {
     return accessToken != null;
   }
 
-  static Future<List<Item>> fetchItems() async {
+  static Future<List<Item>> fetchItems(int page) async {
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/items?page=1&per_page=20&query=' +onFieldSubmittedText+ '%3AQiita HTTP/1.1'),
+      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +onFieldSubmittedText+ '%3AQiita HTTP/1.1'),
     );
     if (response.statusCode == 200) {
       print('fetchItems: Response Body');

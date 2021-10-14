@@ -15,6 +15,7 @@ class _FeedPageState extends State<FeedPage> {
   QiitaRepository repository = QiitaRepository();
   String onChangedText = '';
   final textController = TextEditingController();
+  int _page = 1;
 
   Widget _textField() {
     return SizedBox(
@@ -86,7 +87,7 @@ class _FeedPageState extends State<FeedPage> {
           child: Column(
             children: [
               FutureBuilder<List<Item>>(
-                  future: QiitaRepository.fetchItems(),
+                  future: QiitaRepository.fetchItems(_page),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Item>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -101,7 +102,7 @@ class _FeedPageState extends State<FeedPage> {
                       return Expanded(
                           child: RefreshIndicator(
                               onRefresh: () async {
-                                QiitaRepository.fetchItems();
+                                QiitaRepository.fetchItems(_page);
                               },
                               child: ItemList(items: snapshot.data!)));
                     }
