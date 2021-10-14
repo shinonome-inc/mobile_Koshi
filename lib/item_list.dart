@@ -15,6 +15,7 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   int _page = 1;
+  Item? item;
   @override
   void initState() {
     super.initState();
@@ -24,10 +25,9 @@ class _ItemListState extends State<ItemList> {
 
   @override
   Widget build(BuildContext context) {
-    Item? item;
     return PaginableListViewBuilder(
       loadMore: () async {
-        fetchMore(item!);
+        fetchMore();
         setState(() {});
       },
       errorIndicatorWidget: (exception, tryagain) => Container(
@@ -114,11 +114,11 @@ class _ItemListState extends State<ItemList> {
                   },
               );
   }
-  fetchMore(Item item) async {
+  fetchMore() async {
     await Future.delayed(const Duration(seconds: 1)
     );
     _page++;
      QiitaRepository.fetchItems(_page);
-     return widget.items.add(item);
+     return widget.items.add(item!);
   }
 }
