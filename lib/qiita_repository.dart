@@ -11,7 +11,7 @@ import 'models/authenticated_user.dart';
 
 
 
-String onFieldSubmittedText = '';
+
 String TagId = '';
 class QiitaRepository {
   static final clientID = '${Client().clientId}';
@@ -70,9 +70,9 @@ class QiitaRepository {
     return accessToken != null;
   }
 
-  static Future<List<Item>> fetchItems(int page) async {
+  static Future<List<Item>> fetchItems(int page, String query) async {
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +onFieldSubmittedText+ '%3AQiita HTTP/1.1'),
+      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +query+ '%3AQiita HTTP/1.1'),
     );
     if (response.statusCode == 200) {
       print('fetchItems: Response Body');

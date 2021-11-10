@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile_qiita_application/article_page.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
+import 'package:provider/provider.dart';
 import 'models/item.dart';
 import 'package:intl/intl.dart';
 import 'package:paginable/paginable.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ItemList extends StatefulWidget {
   final List<Item> items;
@@ -14,52 +16,24 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  final ScrollController _scrollController = ScrollController();
   int _page = 1;
-  Item? item;
+  String onChangedText = '';
+
   @override
   void initState() {
     super.initState();
-    _page = 1;
-
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        fetchMore();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return PaginableListViewBuilder(
-      loadMore: () async {
-        fetchMore();
-        setState(() {});
-      },
-      errorIndicatorWidget: (exception, tryagain) => Container(
-        color: Colors.redAccent,
-        height: 130,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              exception.toString(),
-              style: const TextStyle(
-                fontSize: 16
-              ),
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)
-              ),
-                onPressed: tryagain,
-                child: const Text('Try Again'))
-          ],
-        ),
-      ),
-      progressIndicatorWidget: const SizedBox(
-        height: 100,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+    return ListView.builder(
+      controller: _scrollController,
         itemCount: widget.items.length,
       itemBuilder: (context, index) {
                     DateFormat format = DateFormat('yyyy/MM/dd');
@@ -71,10 +45,9 @@ class _ItemListState extends State<ItemList> {
                         children: [
                           ListTile(
                             leading: CircleAvatar(
-                              backgroundImage: NetworkImage(widget.items[index].user
-                                  .profileImageUrl),
+                          backgroundImage: NetworkImage(widget.items[index].user.profileImageUrl),
                               radius: 19,
-                            ),
+                      ),
                             title: Text(widget.items[index].title,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -118,7 +91,10 @@ class _ItemListState extends State<ItemList> {
     await Future.delayed(const Duration(seconds: 1)
     );
     _page++;
-     QiitaRepository.fetchItems(_page);
-     return widget.items.add(item!);
+     var items = await QiitaRepository.fetchItems(_page, onChangedText);
+     print(items);
+     setState(() {
+       widget.items.addAll(items);
+     });
   }
 }

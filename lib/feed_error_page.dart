@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/feed_page.dart';
 
 class FeedErrorPage extends StatelessWidget {
   @override
@@ -48,7 +49,7 @@ class FeedErrorPage extends StatelessWidget {
                     shape: StadiumBorder(),
                   ),
                   onPressed: () {
-
+                      FeedPage();
                   },
                   child: Text('再読み込みする',
                     style: TextStyle(
