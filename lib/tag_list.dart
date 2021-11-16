@@ -21,62 +21,63 @@ class _TagListState extends State<TagList> {
           QiitaRepository.fetchTags();
         },
         child: GridView.builder(
-          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.15,
+          gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 210,
+            mainAxisExtent: 155,
+            childAspectRatio: 1.28,
           ),
           itemCount: widget.tags.length,
           itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-              child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              child: InkWell(
-                onTap: () {
-                  TagId = widget.tags[index].id;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => tagDetailPage())
+            return Container(
+              padding: EdgeInsets.only(left: 8, right: 8, top: 16),
+                child: Material(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                child: InkWell(
+                  onTap: () {
+                    TagId = widget.tags[index].id;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => tagDetailPage())
+                    );
+              },
+                  child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 16),
+                              Image.network(widget.tags[index].iconUrl),
+                              SizedBox(height: 8),
+                              Text(widget.tags[index].id,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF333333),
+                              ),
+                              ),
+                              SizedBox(height: 8),
+                              Text('記事件数: ${widget.tags[index].itemsCount}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF828282),
+                              ),
+                              ),
+                              SizedBox(height: 8),
+                              Text('フォロワー数: ${widget.tags[index].followersCount}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF828282),
+                              ),
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFFFFFF),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Color(0xFFE0E0E0), width: 1)
+                          ),
+                        ),
+                  ),
+                  ),
                   );
-            },
-                child: Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 16),
-                            Image.network(widget.tags[index].iconUrl),
-                            SizedBox(height: 8),
-                            Text(widget.tags[index].id,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF333333),
-                            ),
-                            ),
-                            SizedBox(height: 8),
-                            Text('記事件数: ${widget.tags[index].itemsCount}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF828282),
-                            ),
-                            ),
-                            SizedBox(height: 8),
-                            Text('フォロワー数: ${widget.tags[index].followersCount}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF828282),
-                            ),
-                            ),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFFFFFFF),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Color(0xFFE0E0E0), width: 1)
-                        ),
-                      ),
-                ),
-                ),
-                );
           },
         ),
       ),

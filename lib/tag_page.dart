@@ -18,7 +18,7 @@ class _TagPageState extends State<TagPage> {
       appBar: AppBar(
         toolbarHeight: 45,
         backgroundColor: Colors.white,
-        title: Text('tags',
+        title: Text('Tags',
           style: TextStyle(
             fontSize: 17,
             fontFamily: 'Pacifico',

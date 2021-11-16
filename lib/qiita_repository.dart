@@ -11,7 +11,6 @@ import 'models/authenticated_user.dart';
 
 
 
-
 String TagId = '';
 class QiitaRepository {
   static final clientID = '${Client().clientId}';
