@@ -3,10 +3,11 @@ import 'package:mobile_qiita_application/feed_error_page.dart';
 import 'package:mobile_qiita_application/item_list.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
-import 'models/tags.dart';
+
 
 class tagDetailPage extends StatefulWidget {
-  tagDetailPage({Key? key}) : super(key: key);
+  final String tagId;
+  tagDetailPage({Key? key, required this.tagId}) : super(key: key);
   @override
   _tagDetailPageState createState() => _tagDetailPageState();
 }
@@ -26,7 +27,7 @@ class _tagDetailPageState extends State<tagDetailPage> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(TagId,
+        title: Text(widget.tagId,
         style: TextStyle(
           fontSize: 17,
           color: Color(0xFF000000),
@@ -58,7 +59,7 @@ class _tagDetailPageState extends State<tagDetailPage> {
         child: Column(
           children: [
             FutureBuilder<List<Item>>(
-                future: QiitaRepository.fetchArticle(),
+                future: QiitaRepository.fetchArticle(widget.tagId),
                 builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Expanded(
@@ -72,7 +73,7 @@ class _tagDetailPageState extends State<tagDetailPage> {
                     return Expanded(
                         child: RefreshIndicator(
                           onRefresh: () async {
-                            QiitaRepository.fetchArticle();
+                            QiitaRepository.fetchArticle(widget.tagId);
                           },
                             child: ItemList(items: snapshot.data!)));
                   }

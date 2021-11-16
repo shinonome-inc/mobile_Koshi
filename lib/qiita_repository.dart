@@ -9,9 +9,6 @@ import 'models/tags.dart';
 import 'client.dart';
 import 'models/authenticated_user.dart';
 
-
-
-String TagId = '';
 class QiitaRepository {
   static final clientID = '${Client().clientId}';
   static final clientSecret = '${Client().clientSecret}';
@@ -102,9 +99,9 @@ class QiitaRepository {
       throw Exception('Failed to load item');
     }
   }
-  static Future<List<Item>> fetchArticle() async {
+  static Future<List<Item>> fetchArticle(String query) async {
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/items?page=1&per_page=20&query=' +TagId+ '%3AQiita HTTP/1.1')
+      Uri.parse('https://qiita.com/api/v2/items?page=1&per_page=20&query=' +query+ '%3AQiita HTTP/1.1')
     );
     if (response.statusCode == 200) {
       print('fetchItems: Response Body');
