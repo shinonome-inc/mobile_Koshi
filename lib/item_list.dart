@@ -88,8 +88,6 @@ class _ItemListState extends State<ItemList> {
               );
   }
   fetchMore() async {
-    await Future.delayed(const Duration(seconds: 1)
-    );
     _page++;
      var items = await QiitaRepository.fetchItems(_page, onChangedText);
      print(items);
