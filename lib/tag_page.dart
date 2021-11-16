@@ -18,7 +18,7 @@ class _TagPageState extends State<TagPage> {
       appBar: AppBar(
         toolbarHeight: 45,
         backgroundColor: Colors.white,
-        title: Text('tags',
+        title: Text('Tags',
           style: TextStyle(
             fontSize: 17,
             fontFamily: 'Pacifico',
@@ -27,25 +27,28 @@ class _TagPageState extends State<TagPage> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          children: [
-            FutureBuilder(
-                future: QiitaRepository.fetchTags(),
-                builder: (BuildContext context, AsyncSnapshot<List<Tags>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        )
-                    );
-                  } else if (snapshot.hasError) {
-                    return FeedErrorPage();
-                  } else {
-                    return TagList(tags: snapshot.data!);
-                  }
-                })
-          ],
+      body: Container(
+        color: Color(0xFFFFFFFF),
+        child: Center(
+          child: Column(
+            children: [
+              FutureBuilder(
+                  future: QiitaRepository.fetchTags(),
+                  builder: (BuildContext context, AsyncSnapshot<List<Tags>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Expanded(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          )
+                      );
+                    } else if (snapshot.hasError) {
+                      return FeedErrorPage();
+                    } else {
+                      return TagList(tags: snapshot.data!);
+                    }
+                  })
+            ],
+          ),
         ),
       ),
     );
