@@ -11,7 +11,6 @@ class TagList extends StatefulWidget {
 
 class _TagListState extends State<TagList> {
   QiitaRepository qiitaRepository = QiitaRepository();
-  String tagId = '';
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +34,9 @@ class _TagListState extends State<TagList> {
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 child: InkWell(
                   onTap: () {
-                    tagId = widget.tags[index].id;
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => tagDetailPage(tagId: tagId,))
+                      MaterialPageRoute(builder: (_) => tagDetailPage(tagId: widget.tags[index].id))
                     );
               },
                   child: Container(
