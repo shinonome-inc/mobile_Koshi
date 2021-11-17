@@ -1,6 +1,7 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/tag_error_page.dart';
 import 'package:mobile_qiita_application/tag_list.dart';
-import 'package:mobile_qiita_application/feed_error_page.dart';
 import 'package:mobile_qiita_application/models/tags.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 
@@ -11,6 +12,8 @@ class TagPage extends StatefulWidget {
 
 class _TagPageState extends State<TagPage> {
   QiitaRepository qiitaRepository = QiitaRepository();
+  int _page = 1;
+  List<Tags> tagList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class _TagPageState extends State<TagPage> {
           child: Column(
             children: [
               FutureBuilder(
-                  future: QiitaRepository.fetchTags(),
+                  future: QiitaRepository.fetchTags(_page),
                   builder: (BuildContext context, AsyncSnapshot<List<Tags>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Expanded(
@@ -42,9 +45,48 @@ class _TagPageState extends State<TagPage> {
                           )
                       );
                     } else if (snapshot.hasError) {
-                      return FeedErrorPage();
+                      return TagErrorPage();
                     } else {
-                      return TagList(tags: snapshot.data!);
+                      return Expanded(
+                          child: CustomRefreshIndicator(
+                            onRefresh: () async {
+                              await Future.delayed(const Duration(seconds: 3));
+                              fetchTagsRefresh();
+                            },
+                            child: TagList(tags: snapshot.data!),
+                            builder: (
+                                BuildContext context,
+                                Widget child,
+                                IndicatorController controller,
+                                ) {
+                              return AnimatedBuilder(
+                                  animation: controller,
+                                  builder: (BuildContext context, _) {
+                                    return Stack(
+                                      alignment: Alignment.topCenter,
+                                      children: [
+                                        if(!controller.isIdle)
+                                          Positioned(
+                                            top: 35.0 * controller.value,
+                                            child: SizedBox(
+                                              height: 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                value: !controller.isLoading
+                                                    ? controller.value.clamp(0.0, 1.0)
+                                                    : null,
+                                              ),
+                                            ),
+                                          ),
+                                        Transform.translate(
+                                          offset: Offset(0, 100.0 * controller.value),
+                                          child: child,
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
+                          ));
                     }
                   })
             ],
@@ -52,5 +94,14 @@ class _TagPageState extends State<TagPage> {
         ),
       ),
     );
+  }
+
+  fetchTagsRefresh() async {
+    _page = 1;
+    var tags = await QiitaRepository.fetchTags(_page);
+    print(tags);
+    setState(() {
+      tagList.addAll(tags);
+    });
   }
 }

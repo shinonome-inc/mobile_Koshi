@@ -11,16 +11,24 @@ class TagList extends StatefulWidget {
 
 class _TagListState extends State<TagList> {
   QiitaRepository qiitaRepository = QiitaRepository();
+  int _page = 1;
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        fetchTagsMore();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          print('Loading new Tags');
-          QiitaRepository.fetchTags();
-        },
         child: GridView.builder(
+          controller: _scrollController,
           gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 210,
             mainAxisExtent: 155,
@@ -79,7 +87,15 @@ class _TagListState extends State<TagList> {
                   );
           },
         ),
-      ),
-    );
+      );
+  }
+
+  fetchTagsMore() async {
+    _page++;
+    var tags = await QiitaRepository.fetchTags(_page);
+    print(tags);
+    setState(() {
+      widget.tags.addAll(tags);
+    });
   }
 }
