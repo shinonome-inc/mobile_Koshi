@@ -1,6 +1,7 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:mobile_qiita_application/feed_error_page.dart';
 import 'item_list.dart';
 import 'models/item.dart';
@@ -95,7 +96,7 @@ class _FeedPageState extends State<FeedPage> {
                       );
                     }
                      else if (snapshot.hasError) {
-                      return FeedErrorPage();
+                      return ErrorPage(function: reload());
                     } else {
                       return Expanded(
                           child: CustomRefreshIndicator(
@@ -176,5 +177,8 @@ class _FeedPageState extends State<FeedPage> {
         )
       ],
     );
+  }
+  reload() {
+    BottomBar();
   }
 }

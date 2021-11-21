@@ -13,6 +13,7 @@ class _TagListState extends State<TagList> {
   QiitaRepository qiitaRepository = QiitaRepository();
   int _page = 1;
   ScrollController _scrollController = ScrollController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -91,11 +92,15 @@ class _TagListState extends State<TagList> {
   }
 
   fetchTagsMore() async {
-    _page++;
-    var tags = await QiitaRepository.fetchTags(_page);
-    print(tags);
-    setState(() {
-      widget.tags.addAll(tags);
-    });
+    if (!isLoading) {
+      isLoading = true;
+      _page++;
+      var tags = await QiitaRepository.fetchTags(_page);
+      print(tags);
+      setState(() {
+        widget.tags.addAll(tags);
+      });
+      isLoading = false;
+    }
   }
 }

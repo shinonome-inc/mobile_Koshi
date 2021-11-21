@@ -14,6 +14,7 @@ class _TagPageState extends State<TagPage> {
   QiitaRepository qiitaRepository = QiitaRepository();
   int _page = 1;
   List<Tags> tagList = [];
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +51,11 @@ class _TagPageState extends State<TagPage> {
                       return Expanded(
                           child: CustomRefreshIndicator(
                             onRefresh: () async {
-                              await Future.delayed(const Duration(seconds: 3));
-                              fetchTagsRefresh();
+                              if (!isLoading) {
+                                isLoading = true;
+                                fetchTagsRefresh();
+                                isLoading = false;
+                              }
                             },
                             child: TagList(tags: snapshot.data!),
                             builder: (
@@ -97,11 +101,11 @@ class _TagPageState extends State<TagPage> {
   }
 
   fetchTagsRefresh() async {
-    _page = 1;
-    var tags = await QiitaRepository.fetchTags(_page);
-    print(tags);
-    setState(() {
-      tagList.addAll(tags);
-    });
+      _page = 1;
+      var tags = await QiitaRepository.fetchTags(_page);
+      print(tags);
+      setState(() {
+        tagList.addAll(tags);
+      });
   }
 }

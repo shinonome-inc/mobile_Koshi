@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/feed_page.dart';
 
-class FeedErrorPage extends StatelessWidget {
+class ErrorPage extends StatefulWidget {
+  final Function function;
+  ErrorPage({Key? key, required this.function}) : super(key: key);
   @override
+  _ErrorPageState createState() => _ErrorPageState();
+}
+
+class _ErrorPageState extends State<ErrorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +55,9 @@ class FeedErrorPage extends StatelessWidget {
                     shape: StadiumBorder(),
                   ),
                   onPressed: () {
-                      FeedPage();
+                    setState(() {
+                      widget.function();
+                    });
                   },
                   child: Text('再読み込みする',
                     style: TextStyle(
