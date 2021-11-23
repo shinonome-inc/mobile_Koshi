@@ -5,6 +5,7 @@ import 'package:mobile_qiita_application/models/authenticated_user.dart';
 import 'package:mobile_qiita_application/models/authenticated_user_item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'package:mobile_qiita_application/My_page_list.dart';
+import 'bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'models/item.dart';
 
 class MyPage extends StatefulWidget {
@@ -102,7 +103,7 @@ class _MyPageState extends State<MyPage> {
                       ),
                   );
                 } else if (snapshot.hasError) {
-                  return FeedErrorPage();
+                  return ErrorPage(function: reload());
                 } else {
                   return MyPageItem(authenticatedUserItem: snapshot.data!);
                 }
@@ -110,5 +111,8 @@ class _MyPageState extends State<MyPage> {
         ],
       )
     );
+  }
+  reload() {
+    BottomBar();
   }
 }

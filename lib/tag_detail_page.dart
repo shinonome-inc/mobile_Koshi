@@ -4,6 +4,8 @@ import 'package:mobile_qiita_application/item_list.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 
+import 'bottom_navigation_bar/bottom_navigation_bar.dart';
+
 
 class tagDetailPage extends StatefulWidget {
   final String tagId;
@@ -68,7 +70,7 @@ class _tagDetailPageState extends State<tagDetailPage> {
                         )
                     );
                   } else if (snapshot.hasError){
-                    return FeedErrorPage();
+                    return ErrorPage(function: reload());
                   } else {
                     return Expanded(
                         child: RefreshIndicator(
@@ -82,5 +84,8 @@ class _tagDetailPageState extends State<tagDetailPage> {
         ),
       ),
     );
+  }
+  reload() {
+    BottomBar();
   }
 }
