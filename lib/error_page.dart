@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/feed_page.dart';
 
 class ErrorPage extends StatefulWidget {
-  final Function function;
-  ErrorPage({Key? key, required this.function}) : super(key: key);
+  final VoidCallback refreshFunction;
+  ErrorPage({Key? key, required this.refreshFunction}) : super(key: key);
   @override
   _ErrorPageState createState() => _ErrorPageState();
 }
@@ -56,7 +56,7 @@ class _ErrorPageState extends State<ErrorPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      widget.function();
+                      widget.refreshFunction();
                     });
                   },
                   child: Text('再読み込みする',
