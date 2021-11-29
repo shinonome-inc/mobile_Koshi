@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_qiita_application/feed_error_page.dart';
+import 'package:mobile_qiita_application/error_page.dart';
 import 'package:mobile_qiita_application/models/authenticated_user.dart';
-import 'package:mobile_qiita_application/models/authenticated_user_item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'package:mobile_qiita_application/My_page_list.dart';
-import 'bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'models/item.dart';
 
 class MyPage extends StatefulWidget {
@@ -16,6 +14,14 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   AuthenticatedUser? authenticatedUser;
+  late Future<List<Item>> refreshItems;
+
+  @override
+  void initState() {
+    refreshItems = QiitaRepository.fetchAuthenticatedUserItem();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +100,7 @@ class _MyPageState extends State<MyPage> {
             ),
           ),
           FutureBuilder<List<Item>>(
-              future: QiitaRepository.fetchAuthenticatedUserItem(),
+              future: refreshItems,
               builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(
@@ -103,7 +109,11 @@ class _MyPageState extends State<MyPage> {
                       ),
                   );
                 } else if (snapshot.hasError) {
-                  return ErrorPage(function: reload());
+                  return ErrorPage(
+                    refreshFunction: () {
+                      refreshItems = QiitaRepository.fetchAuthenticatedUserItem();
+                    },
+                  );
                 } else {
                   return MyPageItem(authenticatedUserItem: snapshot.data!);
                 }
@@ -111,8 +121,5 @@ class _MyPageState extends State<MyPage> {
         ],
       )
     );
-  }
-  reload() {
-    BottomBar();
   }
 }

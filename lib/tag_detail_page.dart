@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_qiita_application/feed_error_page.dart';
+import 'package:mobile_qiita_application/error_page.dart';
 import 'package:mobile_qiita_application/item_list.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
@@ -16,6 +16,12 @@ class tagDetailPage extends StatefulWidget {
 
 class _tagDetailPageState extends State<tagDetailPage> {
   QiitaRepository qiitaRepository = QiitaRepository();
+  late Future<List<Item>> refreshItems;
+  @override
+  void initState() {
+    refreshItems = QiitaRepository.fetchArticle(widget.tagId);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +67,7 @@ class _tagDetailPageState extends State<tagDetailPage> {
         child: Column(
           children: [
             FutureBuilder<List<Item>>(
-                future: QiitaRepository.fetchArticle(widget.tagId),
+                future: refreshItems,
                 builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Expanded(
@@ -70,7 +76,11 @@ class _tagDetailPageState extends State<tagDetailPage> {
                         )
                     );
                   } else if (snapshot.hasError){
-                    return ErrorPage(function: reload());
+                    return ErrorPage(
+                      refreshFunction: () {
+                        refreshItems = QiitaRepository.fetchArticle(widget.tagId);
+                      },
+                    );
                   } else {
                     return Expanded(
                         child: RefreshIndicator(

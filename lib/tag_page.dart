@@ -1,6 +1,7 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_qiita_application/tag_error_page.dart';
+import 'package:mobile_qiita_application/error_page.dart';
 import 'package:mobile_qiita_application/tag_list.dart';
 import 'package:mobile_qiita_application/models/tags.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
@@ -15,7 +16,13 @@ class _TagPageState extends State<TagPage> {
   int _page = 1;
   List<Tags> tagList = [];
   bool isLoading = false;
+  late Future<List<Tags>> refreshTags;
 
+  @override
+  void initState() {
+    refreshTags = QiitaRepository.fetchTags(_page);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +44,7 @@ class _TagPageState extends State<TagPage> {
           child: Column(
             children: [
               FutureBuilder(
-                  future: QiitaRepository.fetchTags(_page),
+                  future: refreshTags,
                   builder: (BuildContext context, AsyncSnapshot<List<Tags>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Expanded(
@@ -46,7 +53,11 @@ class _TagPageState extends State<TagPage> {
                           )
                       );
                     } else if (snapshot.hasError) {
-                      return TagErrorPage();
+                      return ErrorPage(
+                        refreshFunction: () {
+                          refreshTags = QiitaRepository.fetchTags(_page);
+                        },
+                      );
                     } else {
                       return Expanded(
                           child: CustomRefreshIndicator(

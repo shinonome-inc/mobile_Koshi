@@ -33,6 +33,7 @@ class _ItemListState extends State<ItemList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       controller: _scrollController,
         itemCount: widget.items.length,
       itemBuilder: (context, index) {

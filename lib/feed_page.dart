@@ -1,8 +1,7 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_qiita_application/bottom_navigation_bar/bottom_navigation_bar.dart';
-import 'package:mobile_qiita_application/feed_error_page.dart';
+import 'package:mobile_qiita_application/error_page.dart';
 import 'item_list.dart';
 import 'models/item.dart';
 import 'qiita_repository.dart';
@@ -19,6 +18,13 @@ class _FeedPageState extends State<FeedPage> {
   final textController = TextEditingController();
   int _page = 1;
   List<Item> itemList = [];
+  late Future<List<Item>> refreshItem;
+
+  @override
+  void initState() {
+    refreshItem = QiitaRepository.fetchItems(_page, onChangedText);
+    super.initState();
+  }
 
   Widget _textField() {
     return SizedBox(
@@ -85,7 +91,7 @@ class _FeedPageState extends State<FeedPage> {
           child: Column(
             children: [
               FutureBuilder<List<Item>>(
-                  future: QiitaRepository.fetchItems(_page, onChangedText),
+                  future: refreshItem,
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Item>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -96,7 +102,11 @@ class _FeedPageState extends State<FeedPage> {
                       );
                     }
                      else if (snapshot.hasError) {
-                      return ErrorPage(function: reload());
+                      return ErrorPage(
+                        refreshFunction: () {
+                          refreshItem = QiitaRepository.fetchItems(_page, onChangedText);
+                        },
+                      );
                     } else {
                       return Expanded(
                           child: CustomRefreshIndicator(
@@ -177,8 +187,5 @@ class _FeedPageState extends State<FeedPage> {
         )
       ],
     );
-  }
-  reload() {
-    BottomBar();
   }
 }
