@@ -44,7 +44,7 @@ class _MyPageState extends State<MyPage> {
                     QiitaRepository.fetchAuthenticatedUser();
                   });
                 } else {
-                  return MyPageUserDetail(userData: snapshot.data!);
+                  return MyPageUserDetail(userData: snapshot.data!,);
                 }
               },
             ),
