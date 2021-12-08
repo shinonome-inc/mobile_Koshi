@@ -3,8 +3,7 @@ import 'package:mobile_qiita_application/error_page.dart';
 import 'package:mobile_qiita_application/item_list.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
-
-import 'bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:mobile_qiita_application/tag_detail_item_list.dart';
 
 
 class tagDetailPage extends StatefulWidget {
@@ -15,11 +14,11 @@ class tagDetailPage extends StatefulWidget {
 }
 
 class _tagDetailPageState extends State<tagDetailPage> {
-  QiitaRepository qiitaRepository = QiitaRepository();
+  int _page = 1;
   late Future<List<Item>> refreshItems;
   @override
   void initState() {
-    refreshItems = QiitaRepository.fetchArticle(widget.tagId);
+    refreshItems = QiitaRepository.fetchArticle(_page, widget.tagId);
     super.initState();
   }
   @override
@@ -78,24 +77,23 @@ class _tagDetailPageState extends State<tagDetailPage> {
                   } else if (snapshot.hasError){
                     return ErrorPage(
                       refreshFunction: () {
-                        refreshItems = QiitaRepository.fetchArticle(widget.tagId);
+                        refreshItems = QiitaRepository.fetchArticle(_page, widget.tagId);
                       },
                     );
                   } else {
                     return Expanded(
                         child: RefreshIndicator(
                           onRefresh: () async {
-                            QiitaRepository.fetchArticle(widget.tagId);
+                            QiitaRepository.fetchArticle(_page, widget.tagId);
                           },
-                            child: ItemList(items: snapshot.data!)));
+                            child: TagDetailItemList(itemList: snapshot.data!, tagID: widget.tagId),
+                        ),
+                    );
                   }
                 })
           ],
         ),
       ),
     );
-  }
-  reload() {
-    BottomBar();
   }
 }
