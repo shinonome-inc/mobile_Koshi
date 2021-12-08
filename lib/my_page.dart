@@ -32,8 +32,8 @@ class _MyPageState extends State<MyPage> {
           Center(
             child: FutureBuilder<User>(
               future: QiitaRepository.fetchAuthenticatedUser(),
-              builder: (BuildContext context, AsyncSnapshot<User>? snapshot) {
-                if (snapshot!.connectionState == ConnectionState.waiting) {
+              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(
                       child: Center(
                         child: CircularProgressIndicator(),
