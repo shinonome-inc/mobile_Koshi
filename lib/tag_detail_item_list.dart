@@ -41,7 +41,7 @@ class _TagDetailItemListState extends State<TagDetailItemList> {
               children: [
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(widget.itemList[index].user.profileImageUrl),
+                    backgroundImage: NetworkImage(widget.itemList[index].user.profileImageUrl!),
                     radius: 19,
                   ),
                   title: Text(widget.itemList[index].title,

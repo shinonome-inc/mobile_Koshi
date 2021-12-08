@@ -46,7 +46,7 @@ class _ItemListState extends State<ItemList> {
                         children: [
                           ListTile(
                             leading: CircleAvatar(
-                          backgroundImage: NetworkImage(widget.items[index].user.profileImageUrl),
+                          backgroundImage: NetworkImage(widget.items[index].user.profileImageUrl!),
                               radius: 19,
                       ),
                             title: Text(widget.items[index].title,
