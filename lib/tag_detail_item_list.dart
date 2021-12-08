@@ -14,10 +14,12 @@ class TagDetailItemList extends StatefulWidget {
 class _TagDetailItemListState extends State<TagDetailItemList> {
   int _page = 1;
   ScrollController _controller = ScrollController();
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
+    _controller.addListener(() async {
       if (_controller.position.pixels == _controller.position.maxScrollExtent) {
         fetchMore();
       }
@@ -81,11 +83,15 @@ class _TagDetailItemListState extends State<TagDetailItemList> {
         });
   }
   fetchMore() async {
-    _page++;
-    var items = await QiitaRepository.fetchArticle(_page, widget.tagID);
-    print(items);
-    setState(() {
-      widget.itemList.addAll(items);
-    });
+    if (!_isLoading) {
+      _isLoading = true;
+      _page++;
+      var items = await QiitaRepository.fetchArticle(_page, widget.tagID);
+      print(items);
+      setState(() {
+        widget.itemList.addAll(items);
+      });
+      _isLoading = false;
+    }
   }
 }
