@@ -82,7 +82,7 @@ class _TopPageState extends State<TopPage> {
                           isScrollControlled: true,
                           builder: (BuildContext context) {
                             return Container(
-                                height: 700,
+                                height: 750,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(20),
