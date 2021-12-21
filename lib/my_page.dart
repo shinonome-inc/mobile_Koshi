@@ -5,6 +5,7 @@ import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'models/user.dart';
 import 'my_page_item_list.dart';
 import 'my_page_user_detail.dart';
+import 'constants.dart';
 
 class MyPage extends StatefulWidget {
   MyPage({Key? key}) : super(key: key);
@@ -17,12 +18,12 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: HexColor(Constants().white),
         title: Text('MyPage',
         style: TextStyle(
           fontSize: 17,
           fontFamily: 'Pacifico',
-          color: Color(0xFF000000),
+          color: HexColor(Constants().black),
         ),
         ),
         centerTitle: true,
@@ -56,19 +57,19 @@ class _MyPageState extends State<MyPage> {
                 child: Container(
                   height: 28,
                   decoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
+                    color: HexColor(Constants().grey6),
                   ),
                   child: Container(
                     padding: EdgeInsets.only(left: 16, top: 4, bottom: 8),
                     child: Text('投稿記事',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF828282),
-                        ),
-                        ),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: HexColor(Constants().grey),
+                      ),
+                    ),
                   ),
-                  ),
-                  ),
+                ),
+              ),
             ],
           ),
           Center(

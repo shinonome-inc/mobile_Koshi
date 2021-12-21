@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile_qiita_application/article_page.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
-import 'package:provider/provider.dart';
 import 'models/item.dart';
 import 'package:intl/intl.dart';
-import 'package:paginable/paginable.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ItemList extends StatefulWidget {
   final List<Item> items;
@@ -46,7 +43,7 @@ class _ItemListState extends State<ItemList> {
                         children: [
                           ListTile(
                             leading: CircleAvatar(
-                          backgroundImage: NetworkImage(widget.items[index].user.profileImageUrl!),
+                          backgroundImage: NetworkImage(widget.items[index].user.profileImageUrl),
                               radius: 19,
                       ),
                             title: Text(widget.items[index].title,

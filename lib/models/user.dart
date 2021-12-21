@@ -1,10 +1,10 @@
 class User {
-  final String? id;
-  final String? profileImageUrl;
-  final String? name;
+  final String id;
+  final String profileImageUrl;
+  final String name;
   final String? description;
-  final int? followeesCount;
-  final int? followersCount;
+  final int followeesCount;
+  final int followersCount;
 
   User({
     required this.id,

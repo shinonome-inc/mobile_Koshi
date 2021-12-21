@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/constants.dart';
 import 'package:mobile_qiita_application/models/user.dart';
 
 class MyPageUserDetail extends StatefulWidget {
@@ -17,17 +18,17 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
         Container(
           margin: EdgeInsets.only(left: 24, top: 24),
           child: CircleAvatar(
-            backgroundImage: NetworkImage(widget.userData!.profileImageUrl!),
+            backgroundImage: NetworkImage(widget.userData!.profileImageUrl),
             radius: 43,
           ),
         ),
         Container(
           margin: EdgeInsets.only(left: 24, top: 15),
-          child: Text(widget.userData!.name!,
+          child: Text(widget.userData!.name,
           style: TextStyle(
             fontSize: 14,
             letterSpacing: 0.25,
-            color: Color(0xFF333333),
+            color: HexColor(Constants().black),
           ),
           ),
         ),
@@ -38,7 +39,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           style: TextStyle(
             fontSize: 12,
             letterSpacing: 0.25,
-            color: Color(0xFF828282),
+            color: HexColor(Constants().grey),
           ),
           ),
         ),
@@ -49,7 +50,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           style: TextStyle(
             fontSize: 12,
             letterSpacing: 0.25,
-            color: Color(0xFF828282),
+            color: HexColor(Constants().grey),
           ),
           ),
         ),
@@ -62,14 +63,14 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF333333),
+                color: HexColor(Constants().black),
               ),
               ),
               SizedBox(width: 5),
               Text('フォロー中',
               style: TextStyle(
                 fontSize: 12,
-                color: Color(0xFF828282),
+                color: HexColor(Constants().grey),
               ),
               ),
               SizedBox(width: 8),
@@ -77,14 +78,14 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF333333),
+                color: HexColor(Constants().black),
               ),
               ),
               SizedBox(width: 5),
               Text('フォロワー',
               style: TextStyle(
                 fontSize: 12,
-                color: Color(0xFF333333),
+                color: HexColor(Constants().black),
               ),)
             ],
           ),

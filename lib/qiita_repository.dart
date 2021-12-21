@@ -124,7 +124,6 @@ class QiitaRepository {
         'Authorization': 'Bearer $accessToken',
       },
     );
-    print(response.statusCode.toString());
     if (response.statusCode == 200) {
       Map<String, dynamic> userMap = json.decode(response.body);
       var user = User.fromJson(userMap);
