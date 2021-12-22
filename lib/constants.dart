@@ -1,22 +1,10 @@
 import 'dart:ui';
 
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF" + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
-  }
-
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}
-
 class Constants {
-  String primary = "#000000";
-  String grey = "#828282";
-  String black = "#333333";
-  String grey6 = "#F2F2F2";
-  String darkGrey = "#B2B2B2";
-  String white = "#FFFFFF";
+  static const primary = Color(0xFF000000);
+  static const grey = Color(0xFF828282);
+  static const black = Color(0xFF333333);
+  static const grey6 = Color(0xFFF2F2F2);
+  static const darkGrey = Color(0xFFB2B2B2);
+  static const white = Color(0xFFFFFFFF);
 }

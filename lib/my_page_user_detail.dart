@@ -28,7 +28,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           style: TextStyle(
             fontSize: 14,
             letterSpacing: 0.25,
-            color: HexColor(Constants().black),
+            color: Constants.black,
           ),
           ),
         ),
@@ -39,7 +39,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           style: TextStyle(
             fontSize: 12,
             letterSpacing: 0.25,
-            color: HexColor(Constants().grey),
+            color: Constants.grey,
           ),
           ),
         ),
@@ -50,7 +50,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           style: TextStyle(
             fontSize: 12,
             letterSpacing: 0.25,
-            color: HexColor(Constants().grey),
+            color: Constants.grey,
           ),
           ),
         ),
@@ -63,14 +63,14 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: HexColor(Constants().black),
+                color: Constants.black,
               ),
               ),
               SizedBox(width: 5),
               Text('フォロー中',
               style: TextStyle(
                 fontSize: 12,
-                color: HexColor(Constants().grey),
+                color: Constants.grey,
               ),
               ),
               SizedBox(width: 8),
@@ -78,14 +78,14 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: HexColor(Constants().black),
+                color: Constants.black,
               ),
               ),
               SizedBox(width: 5),
               Text('フォロワー',
               style: TextStyle(
                 fontSize: 12,
-                color: HexColor(Constants().black),
+                color: Constants.black,
               ),)
             ],
           ),

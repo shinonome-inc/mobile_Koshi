@@ -18,12 +18,12 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: HexColor(Constants().white),
+        backgroundColor: Constants.white,
         title: Text('MyPage',
         style: TextStyle(
           fontSize: 17,
           fontFamily: 'Pacifico',
-          color: HexColor(Constants().black),
+          color: Constants.black,
         ),
         ),
         centerTitle: true,
@@ -57,14 +57,14 @@ class _MyPageState extends State<MyPage> {
                 child: Container(
                   height: 28,
                   decoration: BoxDecoration(
-                    color: HexColor(Constants().grey6),
+                    color: Constants.grey6,
                   ),
                   child: Container(
                     padding: EdgeInsets.only(left: 16, top: 4, bottom: 8),
                     child: Text('投稿記事',
                       style: TextStyle(
                         fontSize: 12,
-                        color: HexColor(Constants().grey),
+                        color: Constants.grey,
                       ),
                     ),
                   ),
