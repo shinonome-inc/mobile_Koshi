@@ -3,11 +3,12 @@ import 'dart:convert';
 
 
 import 'package:http/http.dart' as http;
+import 'package:mobile_qiita_application/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/item.dart';
 import 'models/tags.dart';
 import 'client.dart';
-import 'models/authenticated_user.dart';
+import 'models/user.dart';
 
 class QiitaRepository {
   static final clientID = '${Client().clientId}';
@@ -115,7 +116,7 @@ class QiitaRepository {
       throw Exception('Failed to load item');
     }
   }
-  static Future<AuthenticatedUser> fetchAuthenticatedUser() async {
+  static Future<User> fetchAuthenticatedUser() async {
     final accessToken = await getAccessToken();
     final response = await http.get(
       Uri.parse('https://qiita.com/api/v2/authenticated_user'),
@@ -123,10 +124,14 @@ class QiitaRepository {
         'Authorization': 'Bearer $accessToken',
       },
     );
-    final body = jsonDecode(response.body);
-    final authenticatedUser = AuthenticatedUser.fromJson(body);
-
-    return authenticatedUser;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> userMap = json.decode(response.body);
+      var user = User.fromJson(userMap);
+      print(response.body);
+      return user;
+    } else {
+      throw Exception('Failed to load user');
+    }
   }
   static Future<List<Item>> fetchAuthenticatedUserItem() async {
     final accessToken = await getAccessToken();

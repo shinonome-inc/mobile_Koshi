@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile_qiita_application/article_page.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
-import 'package:provider/provider.dart';
 import 'models/item.dart';
 import 'package:intl/intl.dart';
-import 'package:paginable/paginable.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ItemList extends StatefulWidget {
   final List<Item> items;
