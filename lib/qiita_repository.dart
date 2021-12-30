@@ -62,7 +62,7 @@ class QiitaRepository {
     prefs.remove(keyAccessToken);
   }
 
-  Future<bool> accessTokenIsSaved() async {
+  static Future<bool> accessTokenIsSaved() async {
     final accessToken = await getAccessToken();
     return accessToken != null;
   }

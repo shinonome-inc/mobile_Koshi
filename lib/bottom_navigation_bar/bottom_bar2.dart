@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/feed_page.dart';
-import 'package:mobile_qiita_application/load_accesstoken.dart';
+import 'package:mobile_qiita_application/my_page.dart';
 import 'package:mobile_qiita_application/settings_page.dart';
 import '../tag_page.dart';
 
-class BottomBar extends StatefulWidget {
+class BottomBar2 extends StatefulWidget {
   int selectedIndex;
-  BottomBar({Key? key, required this.selectedIndex}) : super(key: key);
+  BottomBar2({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
-  _BottomBarState createState() => _BottomBarState();
+  _BottomBar2State createState() => _BottomBar2State();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBar2State extends State<BottomBar2> {
   static List<Widget> _widgetOptions = <Widget>[
     FeedPage(),
     TagPage(),
-    LoadAccessToken(),
+    MyPage(),
     SettingPage(),
   ];
 

@@ -111,7 +111,8 @@ class _TopPageState extends State<TopPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => BottomBar()),
+                        MaterialPageRoute(builder: (_) => BottomBar(selectedIndex: 0),
+                        ),
                       );
                     },
                     child: Text('ログインせずに利用する',
