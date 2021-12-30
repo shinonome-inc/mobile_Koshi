@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/bottom_navigation_bar/bottom_bar2.dart';
+import 'package:mobile_qiita_application/bottom_navigation_bar/bottom_bar3.dart';
 import 'package:mobile_qiita_application/constants.dart';
 import 'package:mobile_qiita_application/my_page_not_login.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
@@ -26,7 +27,7 @@ class _LoadAccessTokenState extends State<LoadAccessToken> {
       } else {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyPageNotLogin())
+          MaterialPageRoute(builder: (context) => BottomBar3(selectedIndex: 2))
         );
       }
     }).catchError((e) {
