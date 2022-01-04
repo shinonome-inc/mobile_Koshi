@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/error_page.dart';
 import 'package:mobile_qiita_application/models/item.dart';
+import 'package:mobile_qiita_application/my_page_not_login.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'models/user.dart';
 import 'my_page_item_list.dart';
@@ -14,6 +15,25 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  Error? _error;
+
+  @override
+  void initState() {
+    super.initState();
+
+    QiitaRepository.accessTokenIsSaved().then((isSaved) {
+      if (isSaved == false) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => MyPageNotLogin())
+        );
+      }
+    }).catchError((e) {
+      setState(() {
+        _error = e;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/feed_page.dart';
-import 'package:mobile_qiita_application/load_accesstoken.dart';
+import 'package:mobile_qiita_application/my_page.dart';
 import 'package:mobile_qiita_application/settings_page.dart';
 import '../tag_page.dart';
 
@@ -16,7 +16,7 @@ class _BottomBarState extends State<BottomBar> {
   static List<Widget> _widgetOptions = <Widget>[
     FeedPage(),
     TagPage(),
-    LoadAccessToken(),
+    MyPage(),
     SettingPage(),
   ];
 

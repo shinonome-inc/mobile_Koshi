@@ -41,7 +41,7 @@ class _MyPageItemListState extends State<MyPageItemList> {
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           return Container(
-                              height: 700,
+                              height: MediaQuery.of(context).size.height * 0.95,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(20),

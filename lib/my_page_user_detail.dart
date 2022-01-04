@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_qiita_application/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:mobile_qiita_application/constants.dart';
 import 'package:mobile_qiita_application/followers_page.dart';
 import 'package:mobile_qiita_application/follows_page.dart';
 import 'package:mobile_qiita_application/models/user.dart';
+import 'package:mobile_qiita_application/my_page_not_login.dart';
+import 'package:mobile_qiita_application/qiita_repository.dart';
 
 class MyPageUserDetail extends StatefulWidget {
   final User? userData;
@@ -12,6 +15,7 @@ class MyPageUserDetail extends StatefulWidget {
 }
 
 class _MyPageUserDetailState extends State<MyPageUserDetail> {
+
   @override
   Widget build(BuildContext context) {
     return Column(
