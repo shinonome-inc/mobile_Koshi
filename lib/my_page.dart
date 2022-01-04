@@ -15,24 +15,93 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  Error? _error;
+  var isLogin = false;
 
   @override
   void initState() {
     super.initState();
 
     QiitaRepository.accessTokenIsSaved().then((isSaved) {
-      if (isSaved == false) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => MyPageNotLogin())
-        );
-      }
-    }).catchError((e) {
       setState(() {
-        _error = e;
+        isLogin = isSaved;
       });
     });
+  }
+
+  Widget LoginUI() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Center(
+            child: FutureBuilder<User>(
+              future: QiitaRepository.fetchAuthenticatedUser(),
+              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return ErrorPage(refreshFunction: () {
+                    QiitaRepository.fetchAuthenticatedUser();
+                  });
+                } else {
+                  return MyPageUserDetail(userData: snapshot.data);
+                }
+              },
+            ),
+          ),
+          SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 28,
+                  decoration: BoxDecoration(
+                    color: Constants.grey6,
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 16, top: 4, bottom: 8),
+                    child: Text('投稿記事',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Constants.grey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Center(
+            child: FutureBuilder<List<Item>>(
+              future: QiitaRepository.fetchAuthenticatedUserItem(),
+              builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return ErrorPage(refreshFunction: () {
+                    QiitaRepository.fetchAuthenticatedUserItem();
+                  },
+                  );
+                } else {
+                  return MyPageItemList(itemData: snapshot.data!);
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget notLoginUI() {
+    return MyPageNotLogin();
   }
 
   @override
@@ -49,75 +118,7 @@ class _MyPageState extends State<MyPage> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-              children: [
-                  Center(
-                    child: FutureBuilder<User>(
-                            future: QiitaRepository.fetchAuthenticatedUser(),
-                            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Expanded(
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                );
-                              } else if (snapshot.hasError) {
-                                return ErrorPage(refreshFunction: () {
-                                  QiitaRepository.fetchAuthenticatedUser();
-                                });
-                              } else {
-                                return MyPageUserDetail(userData: snapshot.data);
-                              }
-                            },
-                          ),
-                        ),
-                      SizedBox(height: 12),
-                      Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  color: Constants.grey6,
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 16, top: 4, bottom: 8),
-                                  child: Text('投稿記事',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Constants.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                  Center(
-                    child: FutureBuilder<List<Item>>(
-                      future: QiitaRepository.fetchAuthenticatedUserItem(),
-                      builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Expanded(
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return ErrorPage(refreshFunction: () {
-                            QiitaRepository.fetchAuthenticatedUserItem();
-                          },
-                          );
-                        } else {
-                          return MyPageItemList(itemData: snapshot.data!);
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-        ),
+      body: isLogin ? LoginUI() : notLoginUI(),
       );
   }
 }
