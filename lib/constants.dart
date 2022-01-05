@@ -7,4 +7,5 @@ class Constants {
   static const grey6 = Color(0xFFF2F2F2);
   static const darkGrey = Color(0xFFB2B2B2);
   static const white = Color(0xFFFFFFFF);
+  static const primaryColor = Color(0xFF468300);
 }

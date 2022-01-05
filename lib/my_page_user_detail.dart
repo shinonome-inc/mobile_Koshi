@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/constants.dart';
+import 'package:mobile_qiita_application/followers_page.dart';
+import 'package:mobile_qiita_application/follows_page.dart';
 import 'package:mobile_qiita_application/models/user.dart';
 
 class MyPageUserDetail extends StatefulWidget {
@@ -10,6 +12,7 @@ class MyPageUserDetail extends StatefulWidget {
 }
 
 class _MyPageUserDetailState extends State<MyPageUserDetail> {
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,12 +62,21 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           margin: EdgeInsets.only(left: 24),
           child: Row(
             children: [
-              Text('${widget.userData!.followeesCount}',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: Constants.black,
-              ),
+              Builder(builder: (context) => InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => FollowsPage())
+                    );
+                  },
+                  child: Text('${widget.userData!.followeesCount}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Constants.black,
+                  ),
+                  ),
+                ),
               ),
               SizedBox(width: 5),
               Text('フォロー中',
@@ -74,12 +86,21 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               ),
               ),
               SizedBox(width: 8),
-              Text('${widget.userData!.followersCount}',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: Constants.black,
-              ),
+              Builder(builder: (context) => InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => FollowersPage())
+                    );
+                  },
+                  child: Text('${widget.userData!.followersCount}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Constants.black,
+                  ),
+                  ),
+                ),
               ),
               SizedBox(width: 5),
               Text('フォロワー',

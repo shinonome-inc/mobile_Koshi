@@ -5,14 +5,14 @@ import 'package:mobile_qiita_application/settings_page.dart';
 import '../tag_page.dart';
 
 class BottomBar extends StatefulWidget {
-  BottomBar({Key? key}) : super(key: key);
+  int selectedIndex;
+  BottomBar({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   _BottomBarState createState() => _BottomBarState();
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     FeedPage(),
     TagPage(),
@@ -22,7 +22,7 @@ class _BottomBarState extends State<BottomBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      widget.selectedIndex = index;
     });
   }
   @override
@@ -33,7 +33,7 @@ class _BottomBarState extends State<BottomBar> {
         toolbarHeight: 0,
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(widget.selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -57,7 +57,7 @@ class _BottomBarState extends State<BottomBar> {
         showUnselectedLabels: true,
         unselectedLabelStyle: TextStyle(color: Colors.grey[700]),
         unselectedItemColor: Colors.grey[700],
-        currentIndex: _selectedIndex,
+        currentIndex: widget.selectedIndex,
         selectedItemColor: Colors.green[600],
         onTap: _onItemTapped,
       ),

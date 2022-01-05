@@ -14,21 +14,22 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  var isLogin = false;
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Constants.white,
-        title: Text('MyPage',
-        style: TextStyle(
-          fontSize: 17,
-          fontFamily: 'Pacifico',
-          color: Constants.black,
-        ),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
+  void initState() {
+    super.initState();
+
+    QiitaRepository.accessTokenIsSaved().then((isSaved) {
+      setState(() {
+        isLogin = isSaved;
+      });
+    });
+  }
+
+  Widget loginUI() {
+    return SingleChildScrollView(
+      child: Column(
         children: [
           Center(
             child: FutureBuilder<User>(
@@ -36,9 +37,9 @@ class _MyPageState extends State<MyPage> {
               builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return ErrorPage(refreshFunction: () {
@@ -78,9 +79,9 @@ class _MyPageState extends State<MyPage> {
               builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return ErrorPage(refreshFunction: () {
@@ -96,5 +97,57 @@ class _MyPageState extends State<MyPage> {
         ],
       ),
     );
+  }
+
+  Widget notLoginUI() {
+    return Column(
+      children: [
+        Expanded(child: Container()),
+        Text('ログインが必要です',
+        style: TextStyle(
+          fontSize: 14,
+          color: Constants.black
+        ),
+        ),
+        SizedBox(height: 6),
+        Text('マイページの機能を利用するには\nログインを行っていただく必要があります。',
+        style: TextStyle(
+          fontSize: 12,
+          color: Constants.grey
+        ),
+        ),
+        Expanded(child: Container()),
+        ElevatedButton(
+            onPressed: () {},
+            child: Text('ログインする',
+            style: TextStyle(
+              fontSize: 14,
+              letterSpacing: 0.75,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFF9FCFF),
+            ),
+            ),
+        ),
+        SizedBox(height: 32),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Constants.white,
+        title: Text('MyPage',
+        style: TextStyle(
+          fontSize: 17,
+          fontFamily: 'Pacifico',
+          color: Constants.black,
+        ),
+        ),
+        centerTitle: true,
+      ),
+      body: isLogin ? loginUI() : notLoginUI(),
+      );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'article_page.dart';
 import 'models/item.dart';
 import 'package:intl/intl.dart';
 
@@ -10,6 +11,7 @@ class MyPageItemList extends StatefulWidget {
 }
 
 class _MyPageItemListState extends State<MyPageItemList> {
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -31,7 +33,26 @@ class _MyPageItemListState extends State<MyPageItemList> {
                   subtitle: Text('@${widget.itemData[index].user.id} 投稿日: $date LGTM: ${widget.itemData[index].likesCount}',
                   maxLines: 2,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet<Item>(
+                        enableDrag: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return Container(
+                              height: MediaQuery.of(context).size.height * 0.95,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                  )
+                              ),
+                              child: ArticlePage(item: widget.itemData[index])
+                          );
+                        }
+                    );
+                  },
                 ),
                 Divider(
                   indent: 87,

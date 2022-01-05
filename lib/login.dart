@@ -71,7 +71,7 @@ class _LoginState extends State<Login> {
     await QiitaRepository.saveAccessToken(accessToken);
 
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => BottomBar()),
+      MaterialPageRoute(builder: (_) => BottomBar(selectedIndex: 0)),
     );
   }
   String _randomString(int length) {
