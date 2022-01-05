@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/error_page.dart';
 import 'package:mobile_qiita_application/models/item.dart';
-import 'package:mobile_qiita_application/my_page_not_login.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'models/user.dart';
 import 'my_page_item_list.dart';
@@ -28,7 +27,7 @@ class _MyPageState extends State<MyPage> {
     });
   }
 
-  Widget LoginUI() {
+  Widget loginUI() {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -101,7 +100,37 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget notLoginUI() {
-    return MyPageNotLogin();
+    return Column(
+      children: [
+        Expanded(child: Container()),
+        Text('ログインが必要です',
+        style: TextStyle(
+          fontSize: 14,
+          color: Constants.black
+        ),
+        ),
+        SizedBox(height: 6),
+        Text('マイページの機能を利用するには\nログインを行っていただく必要があります。',
+        style: TextStyle(
+          fontSize: 12,
+          color: Constants.grey
+        ),
+        ),
+        Expanded(child: Container()),
+        ElevatedButton(
+            onPressed: () {},
+            child: Text('ログインする',
+            style: TextStyle(
+              fontSize: 14,
+              letterSpacing: 0.75,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFF9FCFF),
+            ),
+            ),
+        ),
+        SizedBox(height: 32),
+      ],
+    );
   }
 
   @override
@@ -118,7 +147,7 @@ class _MyPageState extends State<MyPage> {
         ),
         centerTitle: true,
       ),
-      body: isLogin ? LoginUI() : notLoginUI(),
+      body: isLogin ? loginUI() : notLoginUI(),
       );
   }
 }
