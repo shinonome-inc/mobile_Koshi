@@ -9,6 +9,7 @@ import 'constants.dart';
 
 class MyPage extends StatefulWidget {
   MyPage({Key? key}) : super(key: key);
+
   @override
   _MyPageState createState() => _MyPageState();
 }
@@ -62,7 +63,8 @@ class _MyPageState extends State<MyPage> {
                   ),
                   child: Container(
                     padding: EdgeInsets.only(left: 16, top: 4, bottom: 8),
-                    child: Text('投稿記事',
+                    child: Text(
+                      '投稿記事',
                       style: TextStyle(
                         fontSize: 12,
                         color: Constants.grey,
@@ -76,7 +78,8 @@ class _MyPageState extends State<MyPage> {
           Center(
             child: FutureBuilder<List<Item>>(
               future: QiitaRepository.fetchAuthenticatedUserItem(),
-              builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Expanded(
                     child: Center(
@@ -84,9 +87,10 @@ class _MyPageState extends State<MyPage> {
                     ),
                   );
                 } else if (snapshot.hasError) {
-                  return ErrorPage(refreshFunction: () {
-                    QiitaRepository.fetchAuthenticatedUserItem();
-                  },
+                  return ErrorPage(
+                    refreshFunction: () {
+                      QiitaRepository.fetchAuthenticatedUserItem();
+                    },
                   );
                 } else {
                   return MyPageItemList(itemData: snapshot.data!);
@@ -103,25 +107,19 @@ class _MyPageState extends State<MyPage> {
     return Column(
       children: [
         Expanded(child: Container()),
-        Text('ログインが必要です',
-        style: TextStyle(
-          fontSize: 14,
-          color: Constants.black
-        ),
+        Text(
+          'ログインが必要です',
+          style: TextStyle(fontSize: 14, color: Constants.black),
         ),
         SizedBox(height: 6),
-        Text('マイページの機能を利用するには',
-        style: TextStyle(
-          fontSize: 12,
-          color: Constants.grey
-        ),
+        Text(
+          'マイページの機能を利用するには',
+          style: TextStyle(fontSize: 12, color: Constants.grey),
         ),
         SizedBox(height: 6),
-        Text('ログインを行っていただく必要があります。',
-        style: TextStyle(
-          fontSize: 12,
-          color: Constants.grey
-        ),
+        Text(
+          'ログインを行っていただく必要があります。',
+          style: TextStyle(fontSize: 12, color: Constants.grey),
         ),
         Expanded(child: Container()),
         Row(
@@ -132,23 +130,23 @@ class _MyPageState extends State<MyPage> {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Constants.secondaryColor,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    )
-                  ),
-                    onPressed: () {},
-                    child: Center(
-                      child: Text('ログインする',
+                      primary: Constants.secondaryColor,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      )),
+                  onPressed: () {},
+                  child: Center(
+                    child: Text(
+                      'ログインする',
                       style: TextStyle(
                         fontSize: 14,
                         letterSpacing: 0.75,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFFF9FCFF),
-                      ),
+                        color: Constants.white2,
                       ),
                     ),
+                  ),
                 ),
               ),
             ),
@@ -164,16 +162,17 @@ class _MyPageState extends State<MyPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.white,
-        title: Text('MyPage',
-        style: TextStyle(
-          fontSize: 17,
-          fontFamily: 'Pacifico',
-          color: Constants.black,
-        ),
+        title: Text(
+          'MyPage',
+          style: TextStyle(
+            fontSize: 17,
+            fontFamily: 'Pacifico',
+            color: Constants.black,
+          ),
         ),
         centerTitle: true,
       ),
       body: isLogin ? loginUI() : notLoginUI(),
-      );
+    );
   }
 }
