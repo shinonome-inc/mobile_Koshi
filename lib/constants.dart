@@ -8,4 +8,5 @@ class Constants {
   static const darkGrey = Color(0xFFB2B2B2);
   static const white = Color(0xFFFFFFFF);
   static const primaryColor = Color(0xFF468300);
+  static const secondaryColor = Color(0xFF74C13A);
 }

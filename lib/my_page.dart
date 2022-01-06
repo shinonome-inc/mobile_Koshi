@@ -110,23 +110,49 @@ class _MyPageState extends State<MyPage> {
         ),
         ),
         SizedBox(height: 6),
-        Text('マイページの機能を利用するには\nログインを行っていただく必要があります。',
+        Text('マイページの機能を利用するには',
+        style: TextStyle(
+          fontSize: 12,
+          color: Constants.grey
+        ),
+        ),
+        SizedBox(height: 6),
+        Text('ログインを行っていただく必要があります。',
         style: TextStyle(
           fontSize: 12,
           color: Constants.grey
         ),
         ),
         Expanded(child: Container()),
-        ElevatedButton(
-            onPressed: () {},
-            child: Text('ログインする',
-            style: TextStyle(
-              fontSize: 14,
-              letterSpacing: 0.75,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFFF9FCFF),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 24),
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Constants.secondaryColor,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    )
+                  ),
+                    onPressed: () {},
+                    child: Center(
+                      child: Text('ログインする',
+                      style: TextStyle(
+                        fontSize: 14,
+                        letterSpacing: 0.75,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFF9FCFF),
+                      ),
+                      ),
+                    ),
+                ),
+              ),
             ),
-            ),
+          ],
         ),
         SizedBox(height: 32),
       ],
