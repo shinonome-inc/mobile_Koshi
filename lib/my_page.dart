@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/error_page.dart';
+import 'package:mobile_qiita_application/login.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'models/user.dart';
@@ -135,7 +136,26 @@ class _MyPageState extends State<MyPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       )),
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        enableDrag: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height:
+                                MediaQuery.of(context).size.longestSide * 0.95,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Login(selectedIndex: 2),
+                          );
+                        });
+                  },
                   child: Center(
                     child: Text(
                       'ログインする',

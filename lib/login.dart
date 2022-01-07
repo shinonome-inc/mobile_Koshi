@@ -6,6 +6,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'bottom_navigation_bar/bottom_navigation_bar.dart';
 
 class Login extends StatefulWidget {
+  int selectedIndex;
+  Login({Key? key, required this.selectedIndex}) : super(key: key);
   @override
   _LoginState createState() => _LoginState();
 }
@@ -23,19 +25,18 @@ class _LoginState extends State<Login> {
     _state = _randomString(40);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Qiita auth',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-          fontFamily: 'Pacifico',
-        ),
+        title: Text(
+          'Qiita auth',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 17,
+            fontFamily: 'Pacifico',
+          ),
         ),
         centerTitle: true,
       ),
@@ -52,28 +53,27 @@ class _LoginState extends State<Login> {
             _isLoading = false;
             print(url);
             final uri = Uri.parse(url);
-            if(uri.queryParameters['code'] != null) {
+            if (uri.queryParameters['code'] != null) {
               _onAuthorizeCallbackIsCalled(uri);
             }
           });
         },
-
       ),
-
     );
   }
+
   void _onAuthorizeCallbackIsCalled(Uri uri) async {
-
-
     final accessToken =
-    await QiitaRepository.createAccessTokenFromCallbackUri(uri, _state!);
+        await QiitaRepository.createAccessTokenFromCallbackUri(uri, _state!);
     print('[accessToken]: $accessToken');
     await QiitaRepository.saveAccessToken(accessToken);
 
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => BottomBar(selectedIndex: 0)),
+      MaterialPageRoute(
+          builder: (_) => BottomBar(selectedIndex: widget.selectedIndex)),
     );
   }
+
   String _randomString(int length) {
     final chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     final rand = Random.secure();
