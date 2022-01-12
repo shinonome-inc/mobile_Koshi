@@ -129,41 +129,29 @@ class _MyPageState extends State<MyPage> {
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 24),
                 height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Constants.secondaryColor,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      )),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        enableDrag: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            height:
-                                MediaQuery.of(context).size.longestSide * 0.95,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Login(selectedIndex: 2),
-                          );
-                        });
-                  },
-                  child: Center(
-                    child: Text(
-                      'ログインする',
-                      style: TextStyle(
-                        fontSize: 14,
-                        letterSpacing: 0.75,
-                        fontWeight: FontWeight.w700,
-                        color: Constants.white2,
+                child: Builder(
+                  builder: (context) =>  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Constants.secondaryColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        )),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => Login(selectedIndex: 2))
+                      );
+                    },
+                    child: Center(
+                      child: Text(
+                        'ログインする',
+                        style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 0.75,
+                          fontWeight: FontWeight.w700,
+                          color: Constants.white2,
+                        ),
                       ),
                     ),
                   ),
