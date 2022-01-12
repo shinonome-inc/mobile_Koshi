@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/error_page.dart';
-import 'package:mobile_qiita_application/login.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
+import 'package:mobile_qiita_application/top_page.dart';
 import 'models/user.dart';
 import 'my_page_item_list.dart';
 import 'my_page_user_detail.dart';
@@ -130,7 +130,7 @@ class _MyPageState extends State<MyPage> {
                 margin: EdgeInsets.symmetric(horizontal: 24),
                 height: 50,
                 child: Builder(
-                  builder: (context) =>  ElevatedButton(
+                  builder: (context) => ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         primary: Constants.secondaryColor,
                         elevation: 0,
@@ -138,10 +138,8 @@ class _MyPageState extends State<MyPage> {
                           borderRadius: BorderRadius.circular(25),
                         )),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => Login(selectedIndex: 2))
-                      );
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => TopPage()));
                     },
                     child: Center(
                       child: Text(
