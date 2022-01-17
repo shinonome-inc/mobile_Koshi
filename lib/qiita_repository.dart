@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mobile_qiita_application/models/user.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/item.dart';
 import 'models/tags.dart';
@@ -153,5 +154,9 @@ class QiitaRepository {
     } else {
       throw Exception('Failed to load authenticatedUserItems');
     }
+  }
+  Future<String> getVersionNumber() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
   }
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/feed_page.dart';
 import 'package:mobile_qiita_application/my_page.dart';
-import 'package:mobile_qiita_application/settings_page.dart';
+import 'package:mobile_qiita_application/setting_page.dart';
 import '../tag_page.dart';
 
 class BottomBar extends StatefulWidget {

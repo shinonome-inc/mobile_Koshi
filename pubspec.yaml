@@ -29,6 +29,7 @@ dependencies:
   provider: ^6.0.1
   flutter_state_notifier: ^0.7.1
   custom_refresh_indicator: ^1.0.0
+  package_info: ^2.0.2
 
 
 dev_dependencies:
