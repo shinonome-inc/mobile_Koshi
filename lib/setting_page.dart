@@ -33,7 +33,7 @@ class _SettingPageState extends State<SettingPage> {
             child: Divider(
               height: 0,
               thickness: 0.5,
-              color: Constants.grey2,
+              color: Constants.greyDivider,
             ),
           ),
         ),
@@ -92,7 +92,7 @@ class _SettingPageState extends State<SettingPage> {
                         Divider(
                           indent: 16,
                           height: 0,
-                          color: Constants.grey2,
+                          color: Constants.greyDivider,
                           thickness: 0.5,
                         ),
                       ],
@@ -139,7 +139,7 @@ class _SettingPageState extends State<SettingPage> {
                         Divider(
                           indent: 16,
                           height: 0,
-                          color: Constants.grey2,
+                          color: Constants.greyDivider,
                           thickness: 0.5,
                         ),
                       ],
@@ -184,7 +184,7 @@ class _SettingPageState extends State<SettingPage> {
                         Divider(
                           indent: 16,
                           height: 0,
-                          color: Constants.grey2,
+                          color: Constants.greyDivider,
                           thickness: 0.5,
                         ),
                       ],
@@ -231,7 +231,7 @@ class _SettingPageState extends State<SettingPage> {
                           indent: 16,
                           thickness: 0.5,
                           height: 0,
-                          color: Constants.grey2,
+                          color: Constants.greyDivider,
                         )
                       ],
                     ),
@@ -271,7 +271,7 @@ class _SettingPageState extends State<SettingPage> {
         Divider(
           thickness: 0.5,
           height: 0,
-          color: Constants.grey2,
+          color: Constants.greyDivider,
         ),
         Expanded(
             child: Container(
