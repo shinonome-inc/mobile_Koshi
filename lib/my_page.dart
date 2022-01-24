@@ -148,7 +148,7 @@ class _MyPageState extends State<MyPage> {
                           fontSize: 14,
                           letterSpacing: 0.75,
                           fontWeight: FontWeight.w700,
-                          color: Constants.white2,
+                          color: Constants.whiteLogin,
                         ),
                       ),
                     ),

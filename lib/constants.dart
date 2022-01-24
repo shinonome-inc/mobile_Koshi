@@ -9,6 +9,7 @@ class Constants {
   static const white = Color(0xFFFFFFFF);
   static const primaryColor = Color(0xFF468300);
   static const secondaryColor = Color(0xFF74C13A);
-  static const white2 = Color(0xFFF9FCFF);
-  static const grey2 = Color(0x4D000000);
+  static const whiteLogin = Color(0xFFF9FCFF);
+  static const greyDivider = Color(0x4D000000);
+  static const greyPrivacy = Color(0xFFF9F9F9);
 }

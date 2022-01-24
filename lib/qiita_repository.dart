@@ -1,6 +1,4 @@
-
 import 'dart:convert';
-
 
 import 'package:http/http.dart' as http;
 import 'package:mobile_qiita_application/models/user.dart';
@@ -16,15 +14,13 @@ class QiitaRepository {
   static final clientSecret = '${Client().clientSecret}';
   static final keyAccessToken = 'qiita/accessToken';
 
-
-
   static String createdAuthorizeUrl(String state) {
     final scope = 'read_qiita write_qiita';
     return 'https://qiita.com/api/v2/oauth/authorize?client_id=$clientID&scope=$scope&state=$state';
   }
 
-  static Future<String> createAccessTokenFromCallbackUri(Uri uri,
-      String expectedState) async {
+  static Future<String> createAccessTokenFromCallbackUri(
+      Uri uri, String expectedState) async {
     final String? state = uri.queryParameters['state'];
     final String? code = uri.queryParameters['code'];
     if (expectedState != state) {
@@ -58,7 +54,7 @@ class QiitaRepository {
     return prefs.getString(keyAccessToken);
   }
 
-  Future<void> deleteAccessToken() async {
+  static Future<void> deleteAccessToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(keyAccessToken);
   }
@@ -70,7 +66,9 @@ class QiitaRepository {
 
   static Future<List<Item>> fetchItems(int page, String query) async {
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +query+ '%3AQiita HTTP/1.1'),
+      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
+          query +
+          '%3AQiita HTTP/1.1'),
     );
     if (response.statusCode == 200) {
       print('fetchItems: Response Body');
@@ -83,11 +81,12 @@ class QiitaRepository {
     } else {
       throw Exception('Failed to load item');
     }
-
   }
+
   static Future<List<Tags>> fetchTags(int page) async {
     final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/tags?page=$page&per_page=20&sort=count'),
+      Uri.parse(
+          'https://qiita.com/api/v2/tags?page=$page&per_page=20&sort=count'),
     );
     if (response.statusCode == 200) {
       print('fetchTags: Response Body');
@@ -101,10 +100,12 @@ class QiitaRepository {
       throw Exception('Failed to load item');
     }
   }
+
   static Future<List<Item>> fetchArticle(int page, String query) async {
-    final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +query+ '%3AQiita HTTP/1.1')
-    );
+    final response = await http.get(Uri.parse(
+        'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
+            query +
+            '%3AQiita HTTP/1.1'));
     if (response.statusCode == 200) {
       print('fetchItems: Response Body');
       print(response.body);
@@ -117,6 +118,7 @@ class QiitaRepository {
       throw Exception('Failed to load item');
     }
   }
+
   static Future<User> fetchAuthenticatedUser() async {
     final accessToken = await getAccessToken();
     final response = await http.get(
@@ -134,6 +136,7 @@ class QiitaRepository {
       throw Exception('Failed to load user');
     }
   }
+
   static Future<List<Item>> fetchAuthenticatedUserItem() async {
     final accessToken = await getAccessToken();
     final response = await http.get(
@@ -155,8 +158,24 @@ class QiitaRepository {
       throw Exception('Failed to load authenticatedUserItems');
     }
   }
+
   Future<String> getVersionNumber() async {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   }
+
+  static Future<void> revokeSavedAccessToken() async {
+    final accessToken = await getAccessToken();
+    final response = await http.delete(
+        Uri.parse('https://qiita.com/api/v2/access_tokens/$accessToken'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+        });
+
+    if (response.statusCode == 204) {
+      print("accessToken deleted");
+    } else {
+      throw Exception('Failed to revoke access token');
+    }
   }
+}
