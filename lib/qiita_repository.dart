@@ -178,4 +178,20 @@ class QiitaRepository {
       throw Exception('Failed to revoke access token');
     }
   }
+
+  static Future<List<User>> fetchFollowees(String userId) async {
+    final response = await http.get(Uri.parse(
+        'https://qiita.com/api/v2/users/$userId/followees?page=1&per_page=20'));
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final followees = jsonArray.map((followees) {
+        return User.fromJson(followees);
+      }).toList();
+      return followees;
+    } else {
+      throw Exception('Failed to load followees');
+    }
+  }
 }

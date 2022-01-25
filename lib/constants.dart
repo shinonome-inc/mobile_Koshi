@@ -12,4 +12,5 @@ class Constants {
   static const whiteLogin = Color(0xFFF9FCFF);
   static const greyDivider = Color(0x4D000000);
   static const greyPrivacy = Color(0xFFF9F9F9);
+  static const greyBorder = Color(0xFFE0E0E0);
 }
