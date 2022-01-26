@@ -24,10 +24,13 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
             radius: 43,
           ),
         ),
+        SizedBox(height: 16),
         Container(
           margin: EdgeInsets.only(left: 24, top: 15),
           child: Text(
-            widget.userData!.name,
+            widget.userData!.name != null
+                ? widget.userData!.name
+                : widget.userData!.id,
             style: TextStyle(
               fontSize: 14,
               letterSpacing: 0.25,

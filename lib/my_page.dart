@@ -76,7 +76,7 @@ class _MyPageState extends State<MyPage> {
               ),
             ],
           ),
-          Center(
+          Expanded(
             child: FutureBuilder<List<Item>>(
               future: QiitaRepository.fetchAuthenticatedUserItem(),
               builder:
