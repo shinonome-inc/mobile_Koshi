@@ -14,20 +14,17 @@ class MyPageUserDetail extends StatefulWidget {
 class _MyPageUserDetailState extends State<MyPageUserDetail> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 24, top: 24),
-          child: CircleAvatar(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
             backgroundImage: NetworkImage(widget.userData!.profileImageUrl),
             radius: 43,
           ),
-        ),
-        SizedBox(height: 16),
-        Container(
-          margin: EdgeInsets.only(left: 24, top: 15),
-          child: Text(
+          SizedBox(height: 16),
+          Text(
             widget.userData!.name != null
                 ? widget.userData!.name
                 : widget.userData!.id,
@@ -37,11 +34,8 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               color: Constants.black,
             ),
           ),
-        ),
-        SizedBox(height: 4),
-        Container(
-          margin: EdgeInsets.only(left: 24),
-          child: Text(
+          SizedBox(height: 4),
+          Text(
             '@${widget.userData!.id}',
             style: TextStyle(
               fontSize: 12,
@@ -49,11 +43,8 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               color: Constants.grey,
             ),
           ),
-        ),
-        SizedBox(height: 16),
-        Container(
-          margin: EdgeInsets.only(left: 24),
-          child: Text(
+          SizedBox(height: 16),
+          Text(
             widget.userData!.description != null
                 ? widget.userData!.description!
                 : "",
@@ -63,11 +54,8 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               color: Constants.grey,
             ),
           ),
-        ),
-        SizedBox(height: 16),
-        Container(
-          margin: EdgeInsets.only(left: 24),
-          child: Row(
+          SizedBox(height: 16),
+          Row(
             children: [
               Builder(
                 builder: (context) => InkWell(
@@ -123,8 +111,8 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               )
             ],
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 }
