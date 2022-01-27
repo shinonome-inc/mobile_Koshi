@@ -13,6 +13,8 @@ class FollowsPage extends StatefulWidget {
 }
 
 class _FollowsPageState extends State<FollowsPage> {
+  int _page = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +48,7 @@ class _FollowsPageState extends State<FollowsPage> {
       ),
       body: Center(
         child: FutureBuilder<List<User>>(
-          future: QiitaRepository.fetchFollowees(widget.userData.id),
+          future: QiitaRepository.fetchFollowees(widget.userData.id, _page),
           builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Expanded(
@@ -56,10 +58,10 @@ class _FollowsPageState extends State<FollowsPage> {
               );
             } else if (snapshot.hasError) {
               return ErrorPage(refreshFunction: () {
-                QiitaRepository.fetchFollowees(widget.userData.id);
+                QiitaRepository.fetchFollowees(widget.userData.id, _page);
               });
             } else {
-              return FolloweesList(userList: snapshot.data!);
+              return FolloweesList(userList: snapshot.data!, userData: widget.userData);
             }
           },
         ),
