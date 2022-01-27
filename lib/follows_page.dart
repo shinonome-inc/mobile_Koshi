@@ -30,7 +30,9 @@ class _FollowsPageState extends State<FollowsPage> {
           },
         ),
         title: Text(
-          widget.userData.name,
+          widget.userData.name != null
+              ? widget.userData.name!
+              : widget.userData.id,
           style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w600,
@@ -61,7 +63,8 @@ class _FollowsPageState extends State<FollowsPage> {
                 QiitaRepository.fetchFollowees(widget.userData.id, _page);
               });
             } else {
-              return FolloweesList(userList: snapshot.data!, userData: widget.userData);
+              return FolloweesList(
+                  userList: snapshot.data!, userData: widget.userData);
             }
           },
         ),

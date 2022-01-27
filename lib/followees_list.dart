@@ -7,7 +7,8 @@ import 'package:mobile_qiita_application/user_page.dart';
 class FolloweesList extends StatefulWidget {
   final List<User> userList;
   final User userData;
-  FolloweesList({Key? key, required this.userList, required this.userData}) : super(key: key);
+  FolloweesList({Key? key, required this.userList, required this.userData})
+      : super(key: key);
 
   @override
   _FolloweesListState createState() => _FolloweesListState();
@@ -23,7 +24,8 @@ class _FolloweesListState extends State<FolloweesList> {
     super.initState();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         fetchMore();
       }
     });
@@ -32,7 +34,7 @@ class _FolloweesListState extends State<FolloweesList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      controller: _scrollController,
+        controller: _scrollController,
         itemCount: widget.userList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
@@ -46,9 +48,7 @@ class _FolloweesListState extends State<FolloweesList> {
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => UserPage())
-                    );
+                        context, MaterialPageRoute(builder: (_) => UserPage()));
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class _FolloweesListState extends State<FolloweesList> {
                             children: [
                               Text(
                                 widget.userList[index].name != null
-                                    ? widget.userList[index].name
+                                    ? widget.userList[index].name!
                                     : widget.userList[index].id,
                                 style: TextStyle(
                                   fontSize: 14,
@@ -126,7 +126,8 @@ class _FolloweesListState extends State<FolloweesList> {
     if (!_isLoading) {
       _isLoading = true;
       _page++;
-      var followeesList = await QiitaRepository.fetchFollowees(widget.userData.id, _page);
+      var followeesList =
+          await QiitaRepository.fetchFollowees(widget.userData.id, _page);
       print(followeesList);
       setState(() {
         widget.userList.addAll(followeesList);
