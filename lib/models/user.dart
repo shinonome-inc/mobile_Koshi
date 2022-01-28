@@ -1,7 +1,7 @@
 class User {
   final String id;
   final String profileImageUrl;
-  final String? name;
+  final String name;
   final String? description;
   final int followeesCount;
   final int followersCount;

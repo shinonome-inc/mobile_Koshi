@@ -30,8 +30,8 @@ class _FollowsPageState extends State<FollowsPage> {
           },
         ),
         title: Text(
-          widget.userData.name != null
-              ? widget.userData.name!
+          widget.userData.name.isNotEmpty
+              ? widget.userData.name
               : widget.userData.id,
           style: TextStyle(
               fontSize: 17,

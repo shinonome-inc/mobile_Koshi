@@ -25,8 +25,8 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           ),
           SizedBox(height: 16),
           Text(
-            widget.userData!.name != null
-                ? widget.userData!.name!
+            widget.userData!.name.isNotEmpty
+                ? widget.userData!.name
                 : widget.userData!.id,
             style: TextStyle(
               fontSize: 14,

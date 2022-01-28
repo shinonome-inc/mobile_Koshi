@@ -68,8 +68,8 @@ class _FolloweesListState extends State<FolloweesList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.userList[index].name != null
-                                    ? widget.userList[index].name!
+                                widget.userList[index].name.isNotEmpty
+                                    ? widget.userList[index].name
                                     : widget.userList[index].id,
                                 style: TextStyle(
                                   fontSize: 14,
