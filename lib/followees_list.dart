@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/constants.dart';
 import 'package:mobile_qiita_application/models/user.dart';
+import 'package:mobile_qiita_application/qiita_repository.dart';
+import 'package:mobile_qiita_application/user_page.dart';
 
 class FolloweesList extends StatefulWidget {
   final List<User> userList;
-
-  FolloweesList({Key? key, required this.userList}) : super(key: key);
+  final User userData;
+  FolloweesList({Key? key, required this.userList, required this.userData})
+      : super(key: key);
 
   @override
   _FolloweesListState createState() => _FolloweesListState();
 }
 
 class _FolloweesListState extends State<FolloweesList> {
+  int _page = 1;
+  bool _isLoading = false;
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        fetchMore();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        controller: _scrollController,
         itemCount: widget.userList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
@@ -26,7 +46,10 @@ class _FolloweesListState extends State<FolloweesList> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => UserPage()));
+                  },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -45,7 +68,7 @@ class _FolloweesListState extends State<FolloweesList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.userList[index].name != null
+                                widget.userList[index].name.isNotEmpty
                                     ? widget.userList[index].name
                                     : widget.userList[index].id,
                                 style: TextStyle(
@@ -97,5 +120,19 @@ class _FolloweesListState extends State<FolloweesList> {
             ],
           );
         });
+  }
+
+  fetchMore() async {
+    if (!_isLoading) {
+      _isLoading = true;
+      _page++;
+      var followeesList =
+          await QiitaRepository.fetchFollowees(widget.userData.id, _page);
+      print(followeesList);
+      setState(() {
+        widget.userList.addAll(followeesList);
+      });
+      _isLoading = false;
+    }
   }
 }
