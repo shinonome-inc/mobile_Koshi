@@ -134,9 +134,9 @@ class QiitaRepository {
     }
   }
 
-  static Future<List<User>> fetchFollowers(String userId) async {
+  static Future<List<User>> fetchFollowers(String userId, int page) async {
     final response = await http.get(Uri.parse(
-        'https://qiita.com/api/v2/users/$userId/followers?page=1&per_page=20'));
+        'https://qiita.com/api/v2/users/$userId/followers?page=$page&per_page=20'));
 
     if (response.statusCode == 200) {
       print(response.body);

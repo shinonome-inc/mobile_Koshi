@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/constants.dart';
 import 'package:mobile_qiita_application/models/user.dart';
+import 'package:mobile_qiita_application/qiita_repository.dart';
 
 class FollowersList extends StatefulWidget {
+  final User userData;
   final List<User> followersList;
-  FollowersList({Key? key, required this.followersList}) : super(key: key);
+  FollowersList({Key? key, required this.followersList, required this.userData}) : super(key: key);
   @override
   _FollowersListState createState() => _FollowersListState();
 }
 
 class _FollowersListState extends State<FollowersList> {
+  int _page = 1;
+  bool _isLoading = false;
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        fetchMore();
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      controller: _scrollController,
         itemCount: widget.followersList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
@@ -95,5 +112,18 @@ class _FollowersListState extends State<FollowersList> {
             ],
           );
         });
+  }
+
+  fetchMore() async {
+    if (!_isLoading) {
+      _isLoading = true;
+      _page++;
+      var followers = await QiitaRepository.fetchFollowers(widget.userData.id, _page);
+      print(followers);
+      setState(() {
+        widget.followersList.addAll(followers);
+      });
+      _isLoading = false;
+    }
   }
 }
