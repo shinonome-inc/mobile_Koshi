@@ -4,9 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_qiita_application/models/user.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'client.dart';
 import 'models/item.dart';
 import 'models/tags.dart';
-import 'client.dart';
 import 'models/user.dart';
 
 class QiitaRepository {
@@ -14,9 +15,14 @@ class QiitaRepository {
   static final clientSecret = '${Client().clientSecret}';
   static final keyAccessToken = 'qiita/accessToken';
 
-  static String createdAuthorizeUrl(String state) {
-    final scope = 'read_qiita write_qiita';
-    return 'https://qiita.com/api/v2/oauth/authorize?client_id=$clientID&scope=$scope&state=$state';
+  Future<String> getVersionNumber() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
+
+  static Future<bool> accessTokenIsSaved() async {
+    final accessToken = await getAccessToken();
+    return accessToken != null;
   }
 
   static Future<String> createAccessTokenFromCallbackUri(
@@ -44,61 +50,14 @@ class QiitaRepository {
     return accessToken;
   }
 
-  static Future<void> saveAccessToken(String accessToken) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(keyAccessToken, accessToken);
-  }
-
-  static Future<String?> getAccessToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(keyAccessToken);
+  static String createdAuthorizeUrl(String state) {
+    final scope = 'read_qiita write_qiita';
+    return 'https://qiita.com/api/v2/oauth/authorize?client_id=$clientID&scope=$scope&state=$state';
   }
 
   static Future<void> deleteAccessToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(keyAccessToken);
-  }
-
-  static Future<bool> accessTokenIsSaved() async {
-    final accessToken = await getAccessToken();
-    return accessToken != null;
-  }
-
-  static Future<List<Item>> fetchItems(int page, String query) async {
-    final response = await http.get(
-      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
-          query +
-          '%3AQiita HTTP/1.1'),
-    );
-    if (response.statusCode == 200) {
-      print('fetchItems: Response Body');
-      print(response.body);
-      final List<dynamic> jsonArray = json.decode(response.body);
-      final items = jsonArray.map((item) {
-        return Item.fromJson(item);
-      }).toList();
-      return items;
-    } else {
-      throw Exception('Failed to load item');
-    }
-  }
-
-  static Future<List<Tags>> fetchTags(int page) async {
-    final response = await http.get(
-      Uri.parse(
-          'https://qiita.com/api/v2/tags?page=$page&per_page=20&sort=count'),
-    );
-    if (response.statusCode == 200) {
-      print('fetchTags: Response Body');
-      print(response.body);
-      final List<dynamic> jsonArray = json.decode(response.body);
-      final tags = jsonArray.map((tag) {
-        return Tags.fromJson(tag);
-      }).toList();
-      return tags;
-    } else {
-      throw Exception('Failed to load item');
-    }
   }
 
   static Future<List<Item>> fetchArticle(int page, String query) async {
@@ -159,9 +118,78 @@ class QiitaRepository {
     }
   }
 
-  Future<String> getVersionNumber() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo.version;
+  static Future<List<User>> fetchFollowees(String userId, int page) async {
+    final response = await http.get(Uri.parse(
+        'https://qiita.com/api/v2/users/$userId/followees?page=$page&per_page=20'));
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final followees = jsonArray.map((followees) {
+        return User.fromJson(followees);
+      }).toList();
+      return followees;
+    } else {
+      throw Exception('Failed to load followees');
+    }
+  }
+
+  static Future<List<User>> fetchFollowers(String userId) async {
+    final response = await http.get(Uri.parse(
+        'https://qiita.com/api/v2/users/$userId/followers?page=1&per_page=20'));
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final followers = jsonArray.map((followers) {
+        return User.fromJson(followers);
+      }).toList();
+      return followers;
+    } else {
+      throw Exception('Failed to load followersList');
+    }
+  }
+
+  static Future<List<Item>> fetchItems(int page, String query) async {
+    final response = await http.get(
+      Uri.parse('https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
+          query +
+          '%3AQiita HTTP/1.1'),
+    );
+    if (response.statusCode == 200) {
+      print('fetchItems: Response Body');
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final items = jsonArray.map((item) {
+        return Item.fromJson(item);
+      }).toList();
+      return items;
+    } else {
+      throw Exception('Failed to load item');
+    }
+  }
+
+  static Future<List<Tags>> fetchTags(int page) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://qiita.com/api/v2/tags?page=$page&per_page=20&sort=count'),
+    );
+    if (response.statusCode == 200) {
+      print('fetchTags: Response Body');
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final tags = jsonArray.map((tag) {
+        return Tags.fromJson(tag);
+      }).toList();
+      return tags;
+    } else {
+      throw Exception('Failed to load item');
+    }
+  }
+
+  static Future<String?> getAccessToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(keyAccessToken);
   }
 
   static Future<void> revokeSavedAccessToken() async {
@@ -179,19 +207,8 @@ class QiitaRepository {
     }
   }
 
-  static Future<List<User>> fetchFollowees(String userId, int page) async {
-    final response = await http.get(Uri.parse(
-        'https://qiita.com/api/v2/users/$userId/followees?page=$page&per_page=20'));
-
-    if (response.statusCode == 200) {
-      print(response.body);
-      final List<dynamic> jsonArray = json.decode(response.body);
-      final followees = jsonArray.map((followees) {
-        return User.fromJson(followees);
-      }).toList();
-      return followees;
-    } else {
-      throw Exception('Failed to load followees');
-    }
+  static Future<void> saveAccessToken(String accessToken) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(keyAccessToken, accessToken);
   }
 }
