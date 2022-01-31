@@ -55,7 +55,8 @@ class _FollowersPageState extends State<FollowersPage> {
                 QiitaRepository.fetchFollowers(widget.userData.id, _page);
               });
             } else {
-              return FollowersList(followersList: snapshot.data!, userData: widget.userData);
+              return FollowersList(
+                  followersList: snapshot.data!, userData: widget.userData);
             }
           },
         ),
