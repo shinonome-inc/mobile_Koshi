@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/constants.dart';
 import 'package:mobile_qiita_application/models/user.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
+import 'package:mobile_qiita_application/user_page.dart';
 
 class FollowersList extends StatefulWidget {
   final User userData;
@@ -41,7 +42,12 @@ class _FollowersListState extends State<FollowersList> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => UserPage())
+                    );
+                  },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
