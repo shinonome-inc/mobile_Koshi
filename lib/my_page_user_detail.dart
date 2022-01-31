@@ -88,8 +88,11 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               Builder(
                 builder: (context) => InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => FollowersPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                FollowersPage(userData: widget.userData!)));
                   },
                   child: Text(
                     '${widget.userData!.followersCount}',
