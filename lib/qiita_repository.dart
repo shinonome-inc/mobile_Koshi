@@ -211,4 +211,34 @@ class QiitaRepository {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(keyAccessToken, accessToken);
   }
+
+  static Future<User> fetchUsers(String userId) async {
+    final response =
+        await http.get(Uri.parse('https://qiita.com/api/v2/users/$userId'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> users = json.decode(response.body);
+      var user = User.fromJson(users);
+      print(response.body);
+      return user;
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
+
+  static Future<List<Item>> fetchUserItems(String userId) async {
+    final response = await http.get(Uri.parse(
+        'https://qiita.com/api/v2/users/$userId/items?page=1&per_page=20'));
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      final List<dynamic> jsonArray = json.decode(response.body);
+      final userItems = jsonArray.map((items) {
+        return Item.fromJson(items);
+      }).toList();
+      return userItems;
+    } else {
+      throw Exception('Failed to load UserItems');
+    }
+  }
 }

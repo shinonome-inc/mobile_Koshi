@@ -48,7 +48,10 @@ class _FolloweesListState extends State<FolloweesList> {
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => UserPage()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                UserPage(userData: widget.userList[index])));
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
