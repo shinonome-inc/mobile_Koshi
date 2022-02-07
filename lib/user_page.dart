@@ -69,7 +69,7 @@ class _UserPageState extends State<UserPage> {
               }
             },
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Row(
             children: [
               Expanded(

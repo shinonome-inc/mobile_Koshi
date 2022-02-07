@@ -23,7 +23,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
             backgroundImage: NetworkImage(widget.userData!.profileImageUrl),
             radius: 43,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             widget.userData!.name.isNotEmpty
                 ? widget.userData!.name
@@ -34,7 +34,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               color: Constants.black,
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             '@${widget.userData!.id}',
             style: TextStyle(
@@ -43,7 +43,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               color: Constants.grey,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             widget.userData!.description != null
                 ? widget.userData!.description!
@@ -54,7 +54,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
               color: Constants.grey,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
               Builder(
@@ -76,7 +76,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
                   ),
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Text(
                 'フォロー中',
                 style: TextStyle(
@@ -84,7 +84,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
                   color: Constants.grey,
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Builder(
                 builder: (context) => InkWell(
                   onTap: () {
@@ -104,7 +104,7 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
                   ),
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Text(
                 'フォロワー',
                 style: TextStyle(

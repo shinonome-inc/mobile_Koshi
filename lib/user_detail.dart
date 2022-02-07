@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/constants.dart';
+import 'package:mobile_qiita_application/followers_page.dart';
+import 'package:mobile_qiita_application/follows_page.dart';
 import 'package:mobile_qiita_application/models/user.dart';
 
 class UserDetail extends StatefulWidget {
@@ -15,6 +17,7 @@ class _UserDetailState extends State<UserDetail> {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -22,7 +25,7 @@ class _UserDetailState extends State<UserDetail> {
                 backgroundImage: NetworkImage(widget.userData.profileImageUrl),
                 radius: 30,
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -35,7 +38,7 @@ class _UserDetailState extends State<UserDetail> {
                         letterSpacing: 0.25,
                         color: Constants.black),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     '@${widget.userData.id}',
                     style: TextStyle(
@@ -47,7 +50,7 @@ class _UserDetailState extends State<UserDetail> {
               )
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             widget.userData.description != null
                 ? widget.userData.description!
@@ -57,37 +60,60 @@ class _UserDetailState extends State<UserDetail> {
               letterSpacing: 0.25,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
-              Text('${widget.userData.followeesCount}',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: Constants.black,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              FollowsPage(userData: widget.userData)));
+                },
+                child: Text(
+                  '${widget.userData.followeesCount}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Constants.black,
+                  ),
+                ),
               ),
+              const SizedBox(width: 5),
+              Text(
+                'フォロー中',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Constants.grey,
+                ),
               ),
-              SizedBox(width: 5),
-              Text('フォロー中',
-              style: TextStyle(
-                fontSize: 12,
-                color: Constants.grey,
+              const SizedBox(width: 8),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            FollowersPage(userData: widget.userData),
+                      ));
+                },
+                child: Text(
+                  '${widget.userData.followersCount}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Constants.black,
+                  ),
+                ),
               ),
-              ),
-              SizedBox(width: 8),
-              Text('${widget.userData.followersCount}',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: Constants.black,
-              ),
-              ),
-              SizedBox(width: 5),
-              Text('フォロワー',
-              style: TextStyle(
-                fontSize: 12,
-                color: Constants.black,
-              ),
+              const SizedBox(width: 5),
+              Text(
+                'フォロワー',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Constants.black,
+                ),
               ),
             ],
           )
