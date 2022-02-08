@@ -9,7 +9,8 @@ import 'models/user.dart';
 class UserItem extends StatefulWidget {
   final User userData;
   final List<Item> userItem;
-  UserItem({Key? key, required this.userItem, required this.userData}) : super(key: key);
+  UserItem({Key? key, required this.userItem, required this.userData})
+      : super(key: key);
   @override
   _UserItemState createState() => _UserItemState();
 }
@@ -29,10 +30,11 @@ class _UserItemState extends State<UserItem> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      controller: _controller,
+        controller: _controller,
         itemCount: widget.userItem.length,
         itemBuilder: (BuildContext context, int index) {
           DateFormat format = DateFormat('yyyy/MM/dd');
@@ -55,11 +57,11 @@ class _UserItemState extends State<UserItem> {
                   ),
                   onTap: () {
                     showModalBottomSheet(
-                      enableDrag: true,
+                        enableDrag: true,
                         isScrollControlled: true,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(11))
-                        ),
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(11))),
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
@@ -85,7 +87,8 @@ class _UserItemState extends State<UserItem> {
     if (!_isLoading) {
       _isLoading = true;
       _page++;
-      var userItems = await QiitaRepository.fetchUserItems(widget.userData.id, _page);
+      var userItems =
+          await QiitaRepository.fetchUserItems(widget.userData.id, _page);
       print(userItems);
       setState(() {
         widget.userItem.addAll(userItems);

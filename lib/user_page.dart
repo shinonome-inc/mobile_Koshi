@@ -110,7 +110,8 @@ class _UserPageState extends State<UserPage> {
                   QiitaRepository.fetchUserItems(widget.userData.id, _page);
                 });
               } else {
-                return UserItem(userItem: snapshot.data!, userData: widget.userData);
+                return UserItem(
+                    userItem: snapshot.data!, userData: widget.userData);
               }
             },
           ))
