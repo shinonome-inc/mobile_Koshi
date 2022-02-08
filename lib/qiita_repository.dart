@@ -226,9 +226,9 @@ class QiitaRepository {
     }
   }
 
-  static Future<List<Item>> fetchUserItems(String userId) async {
+  static Future<List<Item>> fetchUserItems(String userId, int page) async {
     final response = await http.get(Uri.parse(
-        'https://qiita.com/api/v2/users/$userId/items?page=1&per_page=20'));
+        'https://qiita.com/api/v2/users/$userId/items?page=$page&per_page=20'));
 
     if (response.statusCode == 200) {
       print(response.body);
