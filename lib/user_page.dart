@@ -16,6 +16,8 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  int _page = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +96,7 @@ class _UserPageState extends State<UserPage> {
           ),
           Expanded(
               child: FutureBuilder<List<Item>>(
-            future: QiitaRepository.fetchUserItems(widget.userData.id),
+            future: QiitaRepository.fetchUserItems(widget.userData.id, _page),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -105,10 +107,11 @@ class _UserPageState extends State<UserPage> {
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(refreshFunction: () {
-                  QiitaRepository.fetchUserItems(widget.userData.id);
+                  QiitaRepository.fetchUserItems(widget.userData.id, _page);
                 });
               } else {
-                return UserItem(userItem: snapshot.data!);
+                return UserItem(
+                    userItem: snapshot.data!, userData: widget.userData);
               }
             },
           ))
