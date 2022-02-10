@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'models/item.dart';
 
@@ -15,8 +18,6 @@ class ArticlePage extends StatefulWidget {
 }
 
 class _ArticlePageState extends State<ArticlePage> {
-  late WebViewController _controller;
-  double _webViewHeight = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,27 +36,17 @@ class _ArticlePageState extends State<ArticlePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: _webViewHeight,
+          height: 710,
           child: WebView(
             initialUrl: widget.item.url,
             javascriptMode: JavascriptMode.unrestricted,
-            onPageFinished: (String url) => _onPageFinished(context, url),
-            onWebViewCreated: (WebViewController controller) {
-              _controller = controller;
-            },
+            gestureRecognizers: Set()..add(Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer())),
+
           ),
         ),
       ),
     );
   }
 
-  Future<void> _onPageFinished(BuildContext context, String url) async {
-    double newHeight = double.parse(
-      await _controller
-          .evaluateJavascript("document.documentElement.scrollHeight;"),
-    );
-    setState(() {
-      _webViewHeight = newHeight;
-    });
-  }
+  
 }
