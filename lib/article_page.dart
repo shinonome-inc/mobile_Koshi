@@ -34,19 +34,11 @@ class _ArticlePageState extends State<ArticlePage> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: 710,
-          child: WebView(
+      body: WebView(
             initialUrl: widget.item.url,
             javascriptMode: JavascriptMode.unrestricted,
             gestureRecognizers: Set()..add(Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer())),
-
           ),
-        ),
-      ),
-    );
+        );
   }
-
-  
 }
