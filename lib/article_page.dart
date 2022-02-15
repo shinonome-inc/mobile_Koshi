@@ -1,8 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_qiita_application/feed_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import 'models/item.dart';
 
 class ArticlePage extends StatelessWidget {
@@ -19,7 +18,8 @@ class ArticlePage extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 45,
         backgroundColor: Color(0xFFF5F5F5),
-        title: Text('article',
+        title: Text(
+          'article',
           style: TextStyle(
             fontSize: 17,
             fontFamily: 'Pacifico',
@@ -29,12 +29,12 @@ class ArticlePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: WebView(
-            initialUrl: item.url,
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController controller) {
-              print("Created");
-            },
-            ),
-      );
+        initialUrl: item.url,
+        javascriptMode: JavascriptMode.unrestricted,
+        gestureRecognizers: Set()
+          ..add(Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer())),
+      ),
+    );
   }
 }
