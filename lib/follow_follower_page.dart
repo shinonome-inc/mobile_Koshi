@@ -6,7 +6,7 @@ import 'package:mobile_qiita_application/follows_page.dart';
 import 'package:mobile_qiita_application/models/user.dart';
 
 class FollowFollowerPage extends StatefulWidget {
-  bool followeesTapped;
+  bool? followeesTapped;
   final User userData;
   FollowFollowerPage(
       {Key? key, required this.userData, required this.followeesTapped})
@@ -78,7 +78,7 @@ class _FollowFollowersPageState extends State<FollowFollowerPage> {
                     onValueChanged: (switchValue) {
                       print(switchValue);
                       setState(() {
-                        widget.followeesTapped = switchValue!;
+                        widget.followeesTapped = switchValue;
                       });
                     },
                   ),
