@@ -11,8 +11,8 @@ import 'models/tags.dart';
 import 'models/user.dart';
 
 class QiitaRepository {
-  static final clientID = '${Client().clientId}';
-  static final clientSecret = '${Client().clientSecret}';
+  static final clientID = '${Client.clientId}';
+  static final clientSecret = '${Client.clientSecret}';
   static final keyAccessToken = 'qiita/accessToken';
 
   Future<String> getVersionNumber() async {
@@ -51,7 +51,7 @@ class QiitaRepository {
   }
 
   static String createdAuthorizeUrl(String state) {
-    final scope = 'read_qiita write_qiita';
+    final scope = 'read_qiita%20write_qiita';
     return 'https://qiita.com/api/v2/oauth/authorize?client_id=$clientID&scope=$scope&state=$state';
   }
 
@@ -96,11 +96,11 @@ class QiitaRepository {
     }
   }
 
-  static Future<List<Item>> fetchAuthenticatedUserItem() async {
+  static Future<List<Item>> fetchAuthenticatedUserItem(int page) async {
     final accessToken = await getAccessToken();
     final response = await http.get(
       Uri.parse(
-          'https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20'),
+          'https://qiita.com/api/v2/authenticated_user/items?page=$page&per_page=20'),
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
