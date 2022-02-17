@@ -97,7 +97,7 @@ class _FeedPageState extends State<FeedPage> {
                     height: 0,
                     thickness: 0.5,
                     color: Constants.greyDivider,
-                  )
+                  ),
                 ],
               ),
             ),
