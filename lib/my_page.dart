@@ -43,10 +43,8 @@ class _MyPageState extends State<MyPage> {
             future: refreshMyProfile,
             builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(refreshFunction: () {

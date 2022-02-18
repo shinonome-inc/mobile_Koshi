@@ -28,70 +28,68 @@ class _TagListState extends State<TagList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        shrinkWrap: true,
-        controller: _scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.28,
-        ),
-        itemCount: widget.tags.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            padding: EdgeInsets.only(left: 8, right: 8, top: 16),
-            child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              tagDetailPage(tagId: widget.tags[index].id)));
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 16),
-                      Image.network(widget.tags[index].iconUrl),
-                      SizedBox(height: 8),
-                      Text(
-                        widget.tags[index].id,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF333333),
-                        ),
+    return GridView.builder(
+      shrinkWrap: true,
+      controller: _scrollController,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.28,
+      ),
+      itemCount: widget.tags.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          padding: EdgeInsets.only(left: 8, right: 8, top: 16),
+          child: Material(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) =>
+                            tagDetailPage(tagId: widget.tags[index].id)));
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    SizedBox(height: 16),
+                    Image.network(widget.tags[index].iconUrl),
+                    SizedBox(height: 8),
+                    Text(
+                      widget.tags[index].id,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF333333),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        '記事件数: ${widget.tags[index].itemsCount}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF828282),
-                        ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '記事件数: ${widget.tags[index].itemsCount}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF828282),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        'フォロワー数: ${widget.tags[index].followersCount}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF828282),
-                        ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'フォロワー数: ${widget.tags[index].followersCount}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF828282),
                       ),
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Color(0xFFE0E0E0), width: 1)),
+                    ),
+                  ],
                 ),
+                decoration: BoxDecoration(
+                    color: Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Color(0xFFE0E0E0), width: 1)),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
