@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/constants.dart';
-import 'package:mobile_qiita_application/followers_page.dart';
-import 'package:mobile_qiita_application/follows_page.dart';
+import 'package:mobile_qiita_application/follow_follower_page.dart';
 import 'package:mobile_qiita_application/models/user.dart';
 
 class MyPageUserDetail extends StatefulWidget {
@@ -57,63 +56,67 @@ class _MyPageUserDetailState extends State<MyPageUserDetail> {
           const SizedBox(height: 16),
           Row(
             children: [
-              Builder(
-                builder: (context) => InkWell(
-                  onTap: () {
+              InkWell(
+                onTap: () {
+                  if (widget.userData!.followeesCount != 0) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) =>
-                                FollowsPage(userData: widget.userData!)));
-                  },
-                  child: Text(
-                    '${widget.userData!.followeesCount}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Constants.black,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 5),
-              Text(
-                'フォロー中',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Constants.grey,
+                            builder: (_) => FollowFollowerPage(
+                                userData: widget.userData!,
+                                followeesTapped: true)));
+                  }
+                },
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                        text: '${widget.userData!.followeesCount}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          color: Constants.black,
+                        )),
+                    TextSpan(
+                        text: ' フォロー中',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Constants.grey,
+                        )),
+                  ]),
                 ),
               ),
               const SizedBox(width: 8),
-              Builder(
-                builder: (context) => InkWell(
-                  onTap: () {
+              InkWell(
+                onTap: () {
+                  if (widget.userData!.followersCount != 0) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) =>
-                                FollowersPage(userData: widget.userData!)));
-                  },
-                  child: Text(
-                    '${widget.userData!.followersCount}',
+                            builder: (_) => FollowFollowerPage(
+                                userData: widget.userData!,
+                                followeesTapped: false)));
+                  }
+                },
+                child: RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                    text: '${widget.userData!.followersCount}',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                       color: Constants.black,
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 5),
-              Text(
-                'フォロワー',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Constants.black,
-                ),
+                  TextSpan(
+                      text: ' フォロワー',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Constants.black,
+                      ))
+                ])),
               )
             ],
-          ),
+          )
         ],
       ),
     );

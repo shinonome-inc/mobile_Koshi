@@ -33,6 +33,7 @@ class _FollowersListState extends State<FollowersList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         controller: _scrollController,
         itemCount: widget.followersList.length,
         itemBuilder: (BuildContext context, int index) {

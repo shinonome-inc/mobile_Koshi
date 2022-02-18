@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_qiita_application/error_page.dart';
-import 'package:mobile_qiita_application/item_list.dart';
 import 'package:mobile_qiita_application/models/item.dart';
 import 'package:mobile_qiita_application/qiita_repository.dart';
 import 'package:mobile_qiita_application/tag_detail_item_list.dart';
-
 
 class tagDetailPage extends StatefulWidget {
   final String tagId;
@@ -21,6 +19,7 @@ class _tagDetailPageState extends State<tagDetailPage> {
     refreshItems = QiitaRepository.fetchArticle(_page, widget.tagId);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +33,12 @@ class _tagDetailPageState extends State<tagDetailPage> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(widget.tagId,
-        style: TextStyle(
-          fontSize: 17,
-          color: Color(0xFF000000),
-        ),
+        title: Text(
+          widget.tagId,
+          style: TextStyle(
+            fontSize: 17,
+            color: Color(0xFF000000),
+          ),
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -49,11 +49,12 @@ class _tagDetailPageState extends State<tagDetailPage> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 12, top: 8.5, bottom: 7.5),
-                  child: Text('投稿記事',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF828282),
-                  ),
+                  child: Text(
+                    '投稿記事',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF828282),
+                    ),
                   ),
                 ),
                 Expanded(child: Container())
@@ -63,37 +64,31 @@ class _tagDetailPageState extends State<tagDetailPage> {
         ),
       ),
       body: Center(
-        child: Column(
-          children: [
-            FutureBuilder<List<Item>>(
-                future: refreshItems,
-                builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        )
-                    );
-                  } else if (snapshot.hasError){
-                    return ErrorPage(
-                      refreshFunction: () {
-                        refreshItems = QiitaRepository.fetchArticle(_page, widget.tagId);
+          child: FutureBuilder<List<Item>>(
+              future: refreshItems,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return ErrorPage(
+                    refreshFunction: () {
+                      refreshItems =
+                          QiitaRepository.fetchArticle(_page, widget.tagId);
+                    },
+                  );
+                } else {
+                  return Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        QiitaRepository.fetchArticle(_page, widget.tagId);
                       },
-                    );
-                  } else {
-                    return Expanded(
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            QiitaRepository.fetchArticle(_page, widget.tagId);
-                          },
-                            child: TagDetailItemList(itemList: snapshot.data!, tagID: widget.tagId),
-                        ),
-                    );
-                  }
-                })
-          ],
-        ),
-      ),
+                      child: TagDetailItemList(
+                          itemList: snapshot.data!, tagID: widget.tagId),
+                    ),
+                  );
+                }
+              })),
     );
   }
 }

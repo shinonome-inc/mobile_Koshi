@@ -17,6 +17,15 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   int _page = 1;
+  late Future<User> refreshUser;
+  late Future<List<Item>> refreshUserItem;
+
+  @override
+  void initState() {
+    refreshUser = QiitaRepository.fetchUsers(widget.userData.id);
+    refreshUserItem = QiitaRepository.fetchUserItems(widget.userData.id, _page);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,7 @@ class _UserPageState extends State<UserPage> {
       body: Column(
         children: [
           FutureBuilder<User>(
-            future: QiitaRepository.fetchUsers(widget.userData.id),
+            future: refreshUser,
             builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Expanded(
@@ -64,10 +73,18 @@ class _UserPageState extends State<UserPage> {
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(refreshFunction: () {
-                  QiitaRepository.fetchUsers(widget.userData.id);
+                  refreshUser = QiitaRepository.fetchUsers(widget.userData.id);
                 });
               } else {
-                return UserDetail(userData: snapshot.data!);
+                return RefreshIndicator(
+                  child: UserDetail(userData: snapshot.data!),
+                  onRefresh: () async {
+                    setState(() {
+                      refreshUser =
+                          QiitaRepository.fetchUsers(widget.userData.id);
+                    });
+                  },
+                );
               }
             },
           ),
@@ -96,22 +113,29 @@ class _UserPageState extends State<UserPage> {
           ),
           Expanded(
               child: FutureBuilder<List<Item>>(
-            future: QiitaRepository.fetchUserItems(widget.userData.id, _page),
+            future: refreshUserItem,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(refreshFunction: () {
-                  QiitaRepository.fetchUserItems(widget.userData.id, _page);
+                  refreshUserItem =
+                      QiitaRepository.fetchUserItems(widget.userData.id, _page);
                 });
               } else {
-                return UserItem(
-                    userItem: snapshot.data!, userData: widget.userData);
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    setState(() {
+                      refreshUserItem = QiitaRepository.fetchUserItems(
+                          widget.userData.id, _page);
+                    });
+                  },
+                  child: UserItem(
+                      userItem: snapshot.data!, userData: widget.userData),
+                );
               }
             },
           ))

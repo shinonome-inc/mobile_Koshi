@@ -16,10 +16,15 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
+  int _page = 1;
   var isLogin = false;
+  late Future<User> refreshMyProfile;
+  late Future<List<Item>> refreshMyItemList;
 
   @override
   void initState() {
+    refreshMyProfile = QiitaRepository.fetchAuthenticatedUser();
+    refreshMyItemList = QiitaRepository.fetchAuthenticatedUserItem(_page);
     super.initState();
 
     QiitaRepository.accessTokenIsSaved().then((isSaved) {
@@ -35,7 +40,7 @@ class _MyPageState extends State<MyPage> {
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 256.0),
           child: FutureBuilder<User>(
-            future: QiitaRepository.fetchAuthenticatedUser(),
+            future: refreshMyProfile,
             builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Expanded(
@@ -45,10 +50,17 @@ class _MyPageState extends State<MyPage> {
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(refreshFunction: () {
-                  QiitaRepository.fetchAuthenticatedUser();
+                  refreshMyProfile = QiitaRepository.fetchAuthenticatedUser();
                 });
               } else {
-                return MyPageUserDetail(userData: snapshot.data);
+                return RefreshIndicator(
+                    child: MyPageUserDetail(userData: snapshot.data),
+                    onRefresh: () async {
+                      setState(() {
+                        refreshMyProfile =
+                            QiitaRepository.fetchAuthenticatedUser();
+                      });
+                    });
               }
             },
           ),
@@ -78,23 +90,30 @@ class _MyPageState extends State<MyPage> {
         ),
         Expanded(
           child: FutureBuilder<List<Item>>(
-            future: QiitaRepository.fetchAuthenticatedUserItem(),
+            future: refreshMyItemList,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(
                   refreshFunction: () {
-                    QiitaRepository.fetchAuthenticatedUserItem();
+                    refreshMyItemList =
+                        QiitaRepository.fetchAuthenticatedUserItem(_page);
                   },
                 );
               } else {
-                return MyPageItemList(itemData: snapshot.data!);
+                return RefreshIndicator(
+                  child: MyPageItemList(itemData: snapshot.data!),
+                  onRefresh: () async {
+                    setState(() {
+                      refreshMyItemList =
+                          QiitaRepository.fetchAuthenticatedUserItem(_page);
+                    });
+                  },
+                );
               }
             },
           ),
@@ -166,6 +185,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Constants.white,
         title: Text(
           'MyPage',
@@ -176,6 +196,14 @@ class _MyPageState extends State<MyPage> {
           ),
         ),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(0),
+          child: Divider(
+            height: 0,
+            thickness: 0.5,
+            color: Constants.greyDivider,
+          ),
+        ),
       ),
       body: isLogin ? loginUI() : notLoginUI(),
     );

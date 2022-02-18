@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'qiita_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -14,10 +16,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final QiitaRepository repository = QiitaRepository();
-
+  bool _isLoading = false;
   String? _state;
   late final Uri uri;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -41,24 +42,26 @@ class _LoginState extends State<Login> {
         centerTitle: true,
       ),
       body: WebView(
-        initialUrl: QiitaRepository.createdAuthorizeUrl(_state!),
-        javascriptMode: JavascriptMode.unrestricted,
-        onPageStarted: (String url) {
-          setState(() {
-            _isLoading = true;
-          });
-        },
-        onPageFinished: (String url) {
-          setState(() async {
-            _isLoading = false;
-            print(url);
-            final uri = Uri.parse(url);
-            if (uri.queryParameters['code'] != null) {
-              _onAuthorizeCallbackIsCalled(uri);
-            }
-          });
-        },
-      ),
+          initialUrl: QiitaRepository.createdAuthorizeUrl(_state!),
+          javascriptMode: JavascriptMode.unrestricted,
+          onPageStarted: (String url) {
+            setState(() {
+              _isLoading = true;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() async {
+              _isLoading = false;
+              print(url);
+              final uri = Uri.parse(url);
+              if (uri.queryParameters['code'] != null) {
+                _onAuthorizeCallbackIsCalled(uri);
+              }
+            });
+          },
+          gestureRecognizers: Set()
+            ..add(Factory<OneSequenceGestureRecognizer>(
+                () => EagerGestureRecognizer()))),
     );
   }
 
