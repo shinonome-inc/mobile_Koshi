@@ -78,14 +78,12 @@ class _tagDetailPageState extends State<tagDetailPage> {
                     },
                   );
                 } else {
-                  return Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        QiitaRepository.fetchArticle(_page, widget.tagId);
-                      },
-                      child: TagDetailItemList(
-                          itemList: snapshot.data!, tagID: widget.tagId),
-                    ),
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      QiitaRepository.fetchArticle(_page, widget.tagId);
+                    },
+                    child: TagDetailItemList(
+                        itemList: snapshot.data!, tagID: widget.tagId),
                   );
                 }
               })),
