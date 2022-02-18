@@ -117,10 +117,8 @@ class _UserPageState extends State<UserPage> {
             builder:
                 (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(refreshFunction: () {

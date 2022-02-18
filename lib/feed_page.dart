@@ -108,44 +108,29 @@ class _FeedPageState extends State<FeedPage> {
                 builder:
                     (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  try {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.length == 0) {
-                        return searchErrorPage();
-                      } else {
-                        return RefreshIndicator(
-                            child: ItemList(
-                                items: snapshot.data!,
-                                onFieldSubmittedText: onFieldSubmittedText),
-                            onRefresh: () async {
-                              setState(() {
-                                refreshItem = QiitaRepository.fetchItems(
-                                    _page, onFieldSubmittedText);
-                              });
-                            });
-                      }
-                    }
-                  } catch (exception) {
-                    return ErrorPage(
-                      refreshFunction: () {
-                        refreshItem = QiitaRepository.fetchItems(
-                            _page, onFieldSubmittedText);
-                      },
-                    );
+                    return CircularProgressIndicator();
                   }
                   if (snapshot.hasError) {
                     return ErrorPage(refreshFunction: () {
                       refreshItem = QiitaRepository.fetchItems(
                           _page, onFieldSubmittedText);
                     });
+                  }
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    return RefreshIndicator(
+                        child: ItemList(
+                            items: snapshot.data!,
+                            onFieldSubmittedText: onFieldSubmittedText),
+                        onRefresh: () async {
+                          setState(() {
+                            refreshItem = QiitaRepository.fetchItems(
+                                _page, onFieldSubmittedText);
+                          });
+                        });
                   } else {
-                    return Text('データーがありません');
+                    return onFieldSubmittedText.isNotEmpty
+                        ? searchErrorPage()
+                        : Text('データが存在しません');
                   }
                 }),
           ),

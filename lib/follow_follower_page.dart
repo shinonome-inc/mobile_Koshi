@@ -86,13 +86,9 @@ class _FollowFollowersPageState extends State<FollowFollowerPage> {
               ],
             ),
           ),
-          (() {
-            if (widget.followeesTapped == true) {
-              return FollowsPage(userData: widget.userData);
-            } else {
-              return FollowersPage(userData: widget.userData);
-            }
-          })(),
+          (widget.followeesTapped == true)
+              ? FollowsPage(userData: widget.userData)
+              : FollowersPage(userData: widget.userData),
         ],
       ),
     );

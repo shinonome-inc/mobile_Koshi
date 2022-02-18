@@ -54,10 +54,7 @@ class _TagPageState extends State<TagPage> {
                 builder:
                     (BuildContext context, AsyncSnapshot<List<Tags>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Expanded(
-                        child: Center(
-                      child: CircularProgressIndicator(),
-                    ));
+                    return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return ErrorPage(
                       refreshFunction: () {

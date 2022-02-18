@@ -21,10 +21,8 @@ class _FollowersPageState extends State<FollowersPage> {
         future: QiitaRepository.fetchFollowers(widget.userData.id, _page),
         builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Expanded(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+            return Center(
+              child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
             return ErrorPage(refreshFunction: () {
